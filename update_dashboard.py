@@ -63,14 +63,19 @@ def load_data(path):
         print(f"    Found: {set(df.columns)}\n")
         sys.exit(1)
 
-    df['Date']    = pd.to_datetime(df['Date'], errors='coerce')
-    df            = df.dropna(subset=['Date'])
-    df['Month']   = df['Date'].dt.strftime('%B %Y')
-    df['DateStr'] = df['Date'].dt.strftime('%d %b %Y')
-    df['Status']  = df['Status'].fillna('').str.strip()
+    df['Date']        = pd.to_datetime(df['Date'], errors='coerce')
+    df                = df.dropna(subset=['Date'])
+    df['Month']       = df['Date'].dt.strftime('%B %Y')
+    df['DateStr']     = df['Date'].dt.strftime('%d %b %Y')
+    df['Status']      = df['Status'].fillna('').str.strip()
+    # Description column — add it if missing
+    if 'Description' not in df.columns:
+        df['Description'] = ''
+    df['Description'] = df['Description'].fillna('').astype(str).str.strip()
     return df
 
 def build_json(df):
+    today = pd.Timestamp.now().normalize()
     month_order, seen = [], set()
     for m in df.sort_values('Date')['Month']:
         if m not in seen:
@@ -82,7 +87,19 @@ def build_json(df):
         data[month] = {}
         for country in sorted(mdf['Country'].unique()):
             cdf = mdf[mdf['Country'] == country].sort_values('Date')
-            data[month][country] = cdf[['DateStr', 'Event', 'Status']].to_dict('records')
+            records = []
+            for _, row in cdf.iterrows():
+                date_passed = bool(row['Date'] <= today)
+                # Hide description for future events
+                desc = row['Description'] if date_passed else ''
+                records.append({
+                    'DateStr':     row['DateStr'],
+                    'Event':       row['Event'],
+                    'Status':      row['Status'],
+                    'Description': desc,
+                    'DatePassed':  date_passed
+                })
+            data[month][country] = records
     return {'months': month_order, 'data': data}
 
 # ── HTML generation ───────────────────────────────────────────────────────────
