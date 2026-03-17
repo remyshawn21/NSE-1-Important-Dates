@@ -8,132 +8,98 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:             #f0f3f8;
-    --surface:        #ffffff;
-    --surface2:       #f5f7fa;
-    --border:         #dde2ec;
-    --tvs-blue:       #1B3F8B;
-    --tvs-blue-dark:  #142f6a;
-    --tvs-blue-light: #e6ecf8;
-    --tvs-red:        #CC1313;
-    --tvs-red-dark:   #a80f0f;
-    --executed:       #1a7a4a;
-    --executed-bg:    #e8f5ee;
-    --postponed:      #b34000;
-    --postponed-bg:   #fff3e8;
-    --yet:            #1B3F8B;
-    --yet-bg:         #e6ecf8;
-    --text:           #1a1f2e;
-    --muted:          #6b7280;
+    --bg:              #f0f3f8;
+    --surface:         #ffffff;
+    --surface2:        #f5f7fa;
+    --border:          #dde2ec;
+    --tvs-blue:        #1B3F8B;
+    --tvs-blue-dark:   #142f6a;
+    --tvs-blue-light:  #e6ecf8;
+    --tvs-red:         #CC1313;
+    --tvs-red-dark:    #a80f0f;
+    --tvs-red-light:   #fceaea;
+    --executed:        #1a7a4a;
+    --executed-bg:     #e8f5ee;
+    --postponed:       #b34000;
+    --postponed-bg:    #fff3e8;
+    --yet:             #1B3F8B;
+    --yet-bg:          #e6ecf8;
+    --text:            #1a1f2e;
+    --muted:           #6b7280;
   }
 
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
   .top-strip { height: 4px; background: linear-gradient(90deg, var(--tvs-red) 0%, var(--tvs-blue) 60%); }
 
-  /* ── HEADER ── */
   header {
-    background: var(--tvs-blue);
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0; z-index: 100;
-    gap: 16px;
-    height: 72px;
-    box-shadow: 0 3px 16px rgba(27,63,139,0.35);
+    background: var(--tvs-blue); padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    gap: 24px; height: 72px;
+    box-shadow: 0 3px 16px rgba(27,63,139,0.35); flex-wrap: wrap;
   }
-
-  .header-left { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+  .header-left { display: flex; align-items: center; gap: 18px; }
   .tvs-logo {
     height: 42px; background: white; border-radius: 7px;
     padding: 5px 12px; display: flex; align-items: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
   .tvs-logo img { height: 30px; width: auto; display: block; }
-  .header-divider { width: 1px; height: 34px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+  .tvs-logo-text {
+    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+    color: var(--tvs-blue); background: white; padding: 6px 14px; border-radius: 7px;
+  }
+  .header-divider { width: 1px; height: 34px; background: rgba(255,255,255,0.2); }
   .header-title h1 {
     font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700;
-    color: white; letter-spacing: -0.2px; white-space: nowrap;
+    color: white; letter-spacing: -0.2px;
   }
   .header-title p {
     font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px;
-    text-transform: uppercase; letter-spacing: 0.7px; font-weight: 300; white-space: nowrap;
+    text-transform: uppercase; letter-spacing: 0.7px; font-weight: 300;
   }
-
-  .header-right {
-    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
-  }
+  .header-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .updated { font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; }
   .updated strong { color: rgba(255,255,255,0.85); }
 
-  /* ── DROPDOWNS ── */
   .dropdown-wrap { position: relative; flex-shrink: 0; }
-
-  .dropdown-btn {
-    background: var(--tvs-red);
-    color: white; border: none;
-    padding: 11px 16px;
-    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
-    border-radius: 8px; cursor: pointer;
+  #monthBtn {
+    background: var(--tvs-red); color: white; border: none;
+    padding: 11px 16px; font-family: 'Syne', sans-serif; font-size: 13px;
+    font-weight: 700; border-radius: 8px; cursor: pointer;
     display: flex; align-items: center; gap: 10px;
     transition: background 0.15s, transform 0.1s;
-    min-width: 175px; justify-content: space-between;
+    min-width: 190px; justify-content: space-between;
     box-shadow: 0 2px 8px rgba(204,19,19,0.4);
-    white-space: nowrap;
   }
-  .dropdown-btn:hover { background: var(--tvs-red-dark); }
-  .dropdown-btn:active { transform: scale(0.98); }
-  .dropdown-btn .arrow { width: 16px; height: 16px; transition: transform 0.2s; flex-shrink: 0; }
-  .dropdown-btn.open .arrow { transform: rotate(180deg); }
+  #monthBtn:hover { background: var(--tvs-red-dark); }
+  #monthBtn:active { transform: scale(0.98); }
+  #monthBtn .arrow { width: 16px; height: 16px; transition: transform 0.2s; flex-shrink: 0; }
+  #monthBtn.open .arrow { transform: rotate(180deg); }
 
   .dropdown-menu {
-    position: absolute; top: calc(100% + 8px); left: 0;
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0;
     background: white; border: 1px solid var(--border); border-radius: 12px;
-    overflow: hidden; overflow-y: auto; max-height: 360px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+    overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.14);
     opacity: 0; transform: translateY(-8px); pointer-events: none;
     transition: opacity 0.18s, transform 0.18s; z-index: 200; min-width: 210px;
   }
   .dropdown-menu.open { opacity: 1; transform: translateY(0); pointer-events: all; }
-
   .dropdown-item {
-    padding: 11px 16px; font-size: 13px; font-weight: 500; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px; font-size: 13px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
     transition: background 0.12s; border-bottom: 1px solid var(--border); color: var(--text);
   }
   .dropdown-item:last-child { border-bottom: none; }
   .dropdown-item:hover { background: var(--tvs-blue-light); color: var(--tvs-blue); }
   .dropdown-item.active { background: var(--tvs-blue-light); color: var(--tvs-blue); font-weight: 700; }
-  .item-label { display: flex; align-items: center; gap: 8px; }
   .event-count {
     font-size: 11px; background: var(--surface2); color: var(--muted);
-    padding: 2px 8px; border-radius: 20px; font-weight: 400; flex-shrink: 0;
+    padding: 2px 8px; border-radius: 20px; font-weight: 400;
   }
   .dropdown-item.active .event-count { background: var(--tvs-blue); color: white; }
 
-  /* ── FILTER BAR ── */
-  .filter-bar {
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-    padding: 10px 40px; background: var(--tvs-blue-light);
-    border-bottom: 1px solid #c5d3ef; min-height: 44px;
-  }
-  .filter-label { font-size: 11px; font-weight: 600; color: var(--tvs-blue); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
-  .filter-tag {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--tvs-red); color: white;
-    padding: 4px 10px 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
-  }
-  .filter-tag.blue { background: var(--tvs-blue); }
-  .filter-tag button {
-    background: none; border: none; color: rgba(255,255,255,0.7);
-    cursor: pointer; font-size: 14px; line-height: 1; padding: 0;
-    display: flex; align-items: center; transition: color 0.1s;
-  }
-  .filter-tag button:hover { color: white; }
-  .no-filters { font-size: 12px; color: var(--muted); font-style: italic; }
-
-  /* ── STATS BAR ── */
   .stats-bar {
     display: flex; gap: 10px; padding: 14px 40px;
     background: white; border-bottom: 1px solid var(--border);
@@ -145,48 +111,52 @@
     border: 1px solid transparent;
   }
   .stat-pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .stat-pill.total    { background: var(--tvs-blue-light); color: var(--tvs-blue); border-color: #c5d3ef; }
+  .stat-pill.total    { background: var(--tvs-blue-light); color: var(--tvs-blue);  border-color: #c5d3ef; }
   .stat-pill.total .dot { background: var(--tvs-blue); }
-  .stat-pill.executed { background: var(--executed-bg); color: var(--executed); border-color: #b8dfc9; }
-  .stat-pill.executed .dot { background: var(--executed); }
+  .stat-pill.executed { background: var(--executed-bg); color: var(--executed);    border-color: #b8dfc9; }
+  .stat-pill.executed .dot  { background: var(--executed); }
   .stat-pill.postponed { background: var(--postponed-bg); color: var(--postponed); border-color: #f5d5b8; }
   .stat-pill.postponed .dot { background: var(--postponed); }
-  .stat-pill.yet { background: var(--yet-bg); color: var(--yet); border-color: #c5d3ef; }
+  .stat-pill.yet      { background: var(--yet-bg); color: var(--yet);              border-color: #c5d3ef; }
   .stat-pill.yet .dot { background: var(--yet); }
 
-  /* ── MAIN ── */
   main { padding: 28px 40px 40px; }
-  .month-section { margin-bottom: 36px; }
   .month-title {
-    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
-    letter-spacing: -0.5px; margin-bottom: 16px;
+    font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+    letter-spacing: -0.8px; margin-bottom: 22px;
     display: flex; align-items: baseline; gap: 10px;
-    color: var(--tvs-blue); border-left: 4px solid var(--tvs-red); padding-left: 14px;
-    animation: fadeUp 0.3s ease;
+    color: var(--tvs-blue); animation: fadeUp 0.3s ease;
+    border-left: 4px solid var(--tvs-red); padding-left: 14px;
   }
-  .month-title .year { color: var(--muted); font-size: 16px; font-weight: 400; }
+  .month-title .year { color: var(--muted); font-size: 18px; font-weight: 400; }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   .country-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px; animation: fadeUp 0.35s ease;
   }
   .country-card {
     background: white; border: 1px solid var(--border); border-radius: 12px;
     overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   }
   .country-card:hover {
-    border-color: var(--tvs-blue); box-shadow: 0 6px 24px rgba(27,63,139,0.13); transform: translateY(-2px);
+    border-color: var(--tvs-blue);
+    box-shadow: 0 6px 24px rgba(27,63,139,0.13);
+    transform: translateY(-2px);
   }
   .country-header {
     padding: 13px 16px; display: flex; align-items: center; gap: 10px;
     background: var(--tvs-blue); border-bottom: 3px solid var(--tvs-red);
   }
   .country-flag {
-    width: 30px; height: 30px; border-radius: 6px; background: rgba(255,255,255,0.12);
-    display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+    width: 30px; height: 30px; border-radius: 6px;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
   }
   .country-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; flex: 1; color: white; }
   .country-event-count {
@@ -202,19 +172,21 @@
   .event-row:hover { background: var(--surface2); }
   .event-date {
     font-size: 11px; font-weight: 600; color: var(--muted);
-    white-space: nowrap; min-width: 78px; padding-top: 2px; font-variant-numeric: tabular-nums;
+    white-space: nowrap; min-width: 78px; padding-top: 2px;
+    font-variant-numeric: tabular-nums;
   }
   .event-info { flex: 1; min-width: 0; }
   .event-name { font-size: 12.5px; line-height: 1.4; color: var(--text); word-break: break-word; }
   .status-badge {
     font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px;
-    white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px;
+    white-space: nowrap; flex-shrink: 0; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-top: 2px;
   }
   .badge-executed  { background: var(--executed-bg);  color: var(--executed); }
   .badge-postponed { background: var(--postponed-bg); color: var(--postponed); }
   .badge-yet       { background: var(--yet-bg);       color: var(--yet); }
   .badge-unknown   { background: var(--surface2);      color: var(--muted); }
-  .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
+  .empty { text-align: center; padding: 80px 20px; color: var(--muted); }
 
   .legend {
     display: flex; gap: 20px; flex-wrap: wrap;
@@ -222,7 +194,7 @@
   }
   .legend span { font-weight: 600; color: var(--tvs-blue); margin-right: 4px; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -231,47 +203,33 @@
 
 <header>
   <div class="header-left">
-    <div class="tvs-logo">
-      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCABdAQcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKiLDnB5789PwzTLmZYIHlZtiIu5ie1fiB8Xf2kvGni/4o+K9Y0rxlrFnpNxqU/2S3tNQkEMcQfbGEAPQqAePWvZy3LKmZylGErcqPPxmMjhEnJXufuH5g/yR/jR5g/yR/jX4HL8cviGxbb468Qg+n9oyll/2gCRkUn/AAvH4hgkf8J14g5ONo1GX73oMsSa9/8A1Vrf8/UeZ/bVPbkZ++W//P8Ak0gbsc+5/wA9K/BA/HD4jj/mefEXTO1tSk+769Qa+zP2d9c+ITfsT/EnxRa3niDxN4p13UZNP0iRZHuZ4kVUTzU5+X52k6f3RXDi8gqYSEZyqJ3aX3+Z00MzjXk4qLVlc/STePX9R/jRv/z/AJNfgfN8aviPDLLBJ428RRujkEHUpMqwG1gfm7Gug8K+KPjn8Rjd2/hTW/FurXcIAb7LeSuIWP3TJlvlB9q6pcM1IRc5VopGMc3jKXKoO5+56ufXj6cH6GneYvr+or4J/wCCiGvePvB/g3wlovg8a5b6JpMIuNX1+xnZFXaFiRJHyCSxJY+p5r4E/wCF2fERlfPjvxAP+4k//wAVXHgchqY6iq0aiSZtiMzjh58jg2fvgWwOpz+f6Cl3BQSTx3J6V8D/ALJlzqfwW+B+tfG74ueKdYuLe+t0fTbHUbmRgkBICskbN80kzEFeM427cZNfNfxs/wCCgnxO+K2pzwaJqUvgjw88n7ix0tx9qKf9NZhgl/ZCBWVDJK+KrypUJJxi7OXS/l1fyRvUzCnSpxnPRvp1P2Eku0jOHlVT6FgP606O4En3Wz7ZB/ka/ASLxD4x1yOa5j1fxFqSxyeXJNHdXEsaN6Eqev04rp/g/wCKPiF4i+Ifh/w1oPjXX9PvNXvYbTzLfUpNyhn2sQrtjhST+FenPhlxi5e2Wm+hwxzeMpKLg9T93aKztJtH0+wt7V7ia5aGJIzNM5ZpCByxJ6k+tW5gxTgkfQ18SfQk1FeTePPiT458N3UkXh/4cXniaCH7102pRWwb/cTDsf8AgRWsb4UftUeFvidqMmjzi68L+JIm8qTStWZUZn9I26P+GK5ZYqlGfs5Oz+av96R7NPJ8dVwssZShzQjq+WUZOK7yUW5RXm0ke5UVSa8SGMvK4RAM7mYAfnmsfT/HWg6xftZWWu2NzdqdpgguFd8/7o5rocknZs8mMJSTlFXS38vU6Wim7h/epdw9RVEDZCQvHFeFfHb9qjQPgbcJpk1pe654gmi86LT7X92qL/fklb5Qv+7ub/ZrV/aS+Kdz8L/hnqGqWOq2enamX8m1e7Bcs3zDCRjl2zgY6d6+Q/Bn7PfiH4iRy+PPjBr9x4e8Op+9nub+X/SrpP7qgnbCp45xk5+XFeJj8ZWpyVDCq8979EvM/ReGMhwGKpvM85qcuHi+VRTfPUl2iktfO2vS6V2dK3/BQ7xjeXjRaf4M02TaebY3Es0u36oOv/Aa9a+DX7Zlp8SPEUXh7XdDvPCuuTH9yNzz28vsXaNDGfZl2/7VfPniD9qaw8E2/wDYPwj8L6f4e0a24/ta/tBPc3P+2Aeg/wBp8n121wWp/tJfEHWPsw1LVre7iWeKd/Ls4YbiRVdGKLIBkBgCCM4IJr56Gazw8051+fulFW+TP1uvwRQzTDN4fLI4dNe63Vlz+TcLTj/263fzT1P1dUnatPrgvhd8U9G+LPhW11vQ7gyQuuJLdm/ewv8A3GHr713tfcwnGpFTg7pn8zV6FXC1ZUK8XGcXZp7phRRRVmAUUUUAFFFFAHP+MtCufE3hXWNJttRm0m4v7SS2iv4VDSW5dMb1U9SDyM9DXxx4B/4JceFPAvi7QtavPGGoa3ZaXPHOdNmsIo4pwmMK5DcA8cD0r7m2j0qtd3EdvC80h2xxq0jN6BetddHF4jDRlGjPlUtznqUKdZp1Fex+Qn/BSLxNaav+0ZNpOnw28NtodhDZkW6BR5rfO2QO43BfoMVkf8E+/Acfjr9prQTNbrPY6TbXGpzIyBh8oAUEH/adB+NeQfGbxk3xB+LXjLxE7+Z/aWq3EqFTkFN+1CP+Aqp/Gvtr/gk14G3N8QPGsqLhfs+jWz9+B50uD7kwA/7o9K/T8Y3l+Tcl9VFL5v8ApnyGHtiMw5nte56p8fv+Cedv8ePiZfeLj44k0C3uIYYYtMt9KSeOPy0wxDb0I3Hk+te/fAD4R2vwN+FeheC7O8OpRaYkgN48YjM7SSPKz4DNgZcjHtXpi/dz3p20eg/KvzKrjcRWpRoVJ3jHZH18cPShN1Ix1Z/P18TrM6b8SvF1keDb6xexn/gNw4Nfbv8AwST+XXviJ/172n/oTivj/wDaNsTY/tA/Eu3QbdniS/A+jXL17l+xd8abT4A/D34veLp1jmvI7a2ttOt2bCz3TF/LXHUqG5J9K/UczjPEZXyw1clC3zsfF4OUaWMvLRK56B/wUw/aGOu65afCrRbtGsbApPrZib5WuMBkh9wqlWI9WQetfP37IX7Odx+0N8WrTTbuOSPwvpbLeazcIDhowcpbK39+QgrnsgZuoFeQv/bPjbxK7OtxrfiHV70/dG6e9upH6gf3nkdjjoC2Ogr9p/2VPgDZ/s7/AArstBKRSa1cYutXvI/+WtwwAwPUKAAPQCvNxlaOQ5fHDUX+8l/TfyO6jCWY4l1pfCj5q/4Kqx3+m/D34d2dlGbfw7FfyrLDAmIllEarb5A4UYaTHocYr82HU7ZI+2MY9vSv32+JXwz8O/GDwff+FvFOnLqOi3gVZEY4bKnKujqdyOCMhhgjFfmT+0l/wTv8S/B/Q9Q8TeE9Qk8W+H7NDPcW8sQjv4Ix959i8SKP9n5v9iubh7NsPRorCVnyyvo+9y80wVWpP29LVfkfUn7IP7Tvwv8AiR4D0fwSqWXhTxPBYLay6PNGiLPgbQ0LYCuCecDua0fhn/wTs+Hvwt+JWk+NdM8Q+K7y90y5N1b2t5dWjW5dgQBhbVGx83GHr8jVuGVopQ22SJg8bR8bCDkEehzX6lf8E2/2gPEXxU8K+IfCnim8l1W+8NNby2mpTkmSa3m8xPLkJOWaN4WwT1DqOq5rLN8srZfCpicJVahL4l6/mjbA4yGKkqVWC5lsz7cCjHSlpaK+BPpSKWESDBAI9DXyb+0L+xdb+N7qXxJ4GeLRvEDfNcWZwltdH+/x9yT/AGh8vtX1vVG6u4rOF5Z5FiijUs7ucKqjuTXJiMNSxUOSqrr+up7WU5zjsjxKxWAqcstu6a7NdV5Hxv4F/Y78Z60I1+IfjnU4NHjG46Pp18zmRfRpSdqr9BmuQ+Lfx20H4Q6s3g/4P6Lo+myac3k32tLaiWTzF+9HGSOW/vOxOO1emftHftfaHovhifRPA+rx6pr98hjN5asWSwjb70ue7D+HHTtXwgMcLyxUYOfT0r4nMMRQwf7jB6y6y3fpc/pDhPJcx4ik8x4hjakvgpcvLFvrKUFuu3NdvfZK/tfhn9sv4qeG74XE+tQa7bsfmtNUtw6t7h49hX6jj/Yr3/Sv28vCPiLRY49Wh17wfft964sbeO7H/ACUcH8Ur4TZ1jTexCqy7jnJA9uOSaf8iuuOZMbT7H3ry6Gb4yhdc3MvPU+4zPgHh7NGpSoKnJdYe7+G33pn1xrH7R/wj0vVx4mt9L1/4h+KI1/cXevKY1hOCPk3KI4uD1SMV4D8Wvjd4q+NWpRza/dxw2MbF7XTbNj9nhz2x/E3+0RmuHKkHIBJ9eKapDZ2j73X3rHEZliMSuRu0eyVr+vc9DKeD8ryiqsRBOpUirKU3zOK7R2UV6JPzGTvtilZVDjrt719o+Cv2D/CPibwLp2qyeLdauL+8t1mSaze3FsrbflVVMZY47gvXxhjnI6jqfWvTPg/+0Z4x+DMiwafOL/QGctPo12xaHnr5b9UP0+T2q8vrYWnNrFw5ovT0MeMMBnWMwkHkWI9nUi22tPeXa72+ejvZtHuvwV/Zu+L/wAH/if9s06605PDz3Xl3s8sxCXVoG+ZvJHO8joetfc9eTfBv48eFvjNpJk0i7+z6lCgM+l3RAuIcdCQeo/2hxXqytmv0jA0aFGlbDu8Xrvc/j7iXMcyzDHN5tSUK0Uk7R5W/N9/6tpYfRRRXoHygUUUUAFFFFADGfYuTXxf+05+394U8Bjxz8P9Os9Sk8W29tLYw3ixobaK4kiypLb+dpYE/SvtFl3DFfGfij/gmT4J8W+JtX13UPFniSa/1K7kupm3x8NIwJA+ToF4x6cV62W/UlUbxt7La3c4sV7dwtQtd9z8olUQrGkYAx0Y9v8AOK/Q3/gn3+014O8E+FfDXwqt9I1a78V6tqc81zdQRIYC8jNtYtvzhYliB9wa7s/8Eofh0evinxIf+BRf/EV6F8Cf2B/BfwH+IVv4v03V9W1a/t4pYoY9QKFEMn3mAUDnk819fmecZdjsNKk2291utel/I8PB4DFYeqp6We/ofT6/dFOoor86PqT8OP2x9PTTf2q/ifbYKqNWE7f9tYY5gR/33n8a8d859pxJjOMruJBwMD9Ca/XP4vf8E8fBfxm+J3iHxvqXiLWLO81mSKSW2tfKESeXbxwLt4yOIQfxNcl/w6g+HYXaPFniVD/eRogf/QK/T8LxDgqeHpwqN8yST07Hx9fKq860pw2bPNv+CZ/7NS6rfN8WfEFpmG1YwaBHKMjfgrJOAfYlFI9Sa++fid4xg+G/w78T+Kbwg2uiabPqLgdX8qNnKj3OAB7mtPwl4T0rwP4d07QdFtI7HStPt0tre1iHyxxoNo49T+tZXxU+GumfFvwFq/hHWZ7qDStUjWO4NjKI5cBw5AYjuVwfbNfB43GvMMX7erpG+3ZH0dDD/V6Ps4b/AKn4naL8fPH1p4k0vVtZ8beJtQWG8jurm1/te4KXCq+6Rdu/ABHAFfX/AMTP+CpVrr/g/UtN8JeCr3TtSvIZIEutYlie3jEgOXARsswz908V2urf8EnfBs1y0uneN9esUbH7qW3imIx05AFQaX/wSb8JxXKy6h451u6VfvLDbRQk/wDAiDX2VfHZHinGdRO8dla339zxKeHzGipRjbU/M63smLwW8CNO8rbY44wzmT6Ac1+tv/BPX9nLUfgb8PdS1nxDCbPxT4oaGae2Y5a3tYQwgjI6Bv3smf8AeHpXpPwd/Y3+FvwRuE1DQvDyXeuryNa1ZvtV3Gf9hmBEf/AAK9uW3RXOFUZO44HU+teTnGe/X6f1ejG0dLt9fl0OvAZb9Wl7So7yHs+xcmq8l0qYDPt3cKW+Xn0wTzU8ke+PHevIPF37NnhvxtrCape614qt7uOTzUSDXrhkjb/ZjdnVR7AV8XUc0rwV362PqMNDD1J2xNRwj3UebX70el6pr1noOnyXuo3sNnaxLmSa5lVET6sT/Kvir9oD9pLV/jRet4A+FdjqGqWkx8q+vLOMkz/7AbpHH/00faK92uP2Q/BOu3C3PiO+8R+LmVsqmu63NNGvsFVlGK9R8LfD3w74JsVsvD+i2GjWinJjsbdItzepIA5rz8RRxWKXs2+SPW2r/wAj6vLMdk+SVFjIQlia0dYqS5aafRv3pOVu2iufJPw4/wCCf1teeGFl8Z6tdW2pyESpbaUyotoR0DFgd2K6q3/4J4+DIuX8Q+IHJ/6aRD/2SvrBVAHSlqY5TgYpL2aZ0VuPOJK1SVT63Jc3RWsvRWPDfAv7IPww8B3a3tnoR1O+U7ludWnN0Y29VQ/ID9BWZ4+/Yr+HPjW4lvbWxm8M30i4MmkkRwk+rQ/c/wC+QK+hSoPUZo2jpgYrp+o4Vw9m6at6HiQ4kzmniPrUcXU9p35n9zV7NeWx8XSf8E47Hzsx+Npli37udPXOPT79dJpf/BP3wPb28q3+savqFwyfK0ci26xtj7+1OSPbOK+rcD0oCgdABXNHKcFF3VNHs1uO+JK8eWWMkvSy/FJM+XPBf7BPw/0ezX+35dR8T3jD94zXUtrF+CxMG/8AHq6W9/Yn+Ed3F+58OT2chHE1vql4H/ENKRXv20dcD8qTavPyj8q2WXYRLl9kreh5tXivP61R1ZY6qn5Tkl9yaX4Hxn4q/YVuPDeoJrnwy8WXuk6vatvgjvZBuDDoqSjgE+jKRXoHwU/aH1LUNcPgP4k2beH/AB7a5+aT5INQTBIkiP3eQOg7g+j7fol7dW6Hb24rzP4qfAPwj8Xp9PufEdpcTXunq62l1bXMkEkO45DLtbBIOCCemKy+o/V3z4TR9Y9H/k/M7pcRf2tT+r5+3USXu1El7SD6a6c8e6k79U119MW4Vm2jrUtYXhvRJdC0Wzs5NRutUlgj2m9vmVppB6sVABPvit2vVV7anxMkk2k7oKKKKZIUUUUAFJtGMYGMY6UtFACUbQeMUtFABRRRQAm0elGB6UtFACbQeCMjOaAoXoAKWigBNoPYUBQOAMClooATA9KWiigApNo9KWigBNo9KNoPUUtFABRRRQAUUUUAFFFFABRRRQAU3YpGCoI+lOooATaPQflS0UUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z" alt="TVS Logo"/>
-    </div>
+    <div class="tvs-logo"><img src="data:image/jpeg;base64,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" alt="TVS Logo"/></div>
     <div class="header-divider"></div>
     <div class="header-title">
       <h1>NSE1 Important Dates</h1>
       <p>Africa Region · 2026 Event Calendar</p>
     </div>
   </div>
-
   <div class="header-right">
-    <div class="updated">Last updated: <strong>Now</strong></div>
-
-    <!-- MONTH DROPDOWN -->
+    <div class="updated">Last updated: <strong>17 Mar 2026, 12:29</strong></div>
     <div class="dropdown-wrap">
-      <button class="dropdown-btn" id="monthBtn">
-        <span id="monthLabel">All Months</span>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <button id="monthBtn">
+        <span id="btnLabel">All Months</span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
       </button>
-      <div class="dropdown-menu" id="monthMenu"></div>
-    </div>
-
-    <!-- COUNTRY DROPDOWN — same red styling -->
-    <div class="dropdown-wrap">
-      <button class="dropdown-btn" id="countryBtn">
-        <span id="countryLabel">All Countries</span>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="dropdown-menu" id="countryMenu"></div>
+      <div class="dropdown-menu" id="dropdownMenu"></div>
     </div>
   </div>
 </header>
 
-<!-- ACTIVE FILTERS BAR -->
-<div class="filter-bar" id="filterBar">
-  <span class="filter-label">Filters:</span>
-  <span class="no-filters" id="noFilters">None — showing all events</span>
-</div>
-
 <div class="stats-bar" id="statsBar"></div>
-<main id="main"></main>
+
+<main>
+  <div class="month-title" id="monthTitle"></div>
+  <div class="country-grid" id="countryGrid"></div>
+</main>
 
 <div class="legend">
   <span>Legend:</span>
@@ -281,160 +239,97 @@
 </div>
 
 <script>
-const RAW = {"months": ["January 2026", "February 2026", "March 2026", "April 2026", "May 2026", "June 2026"], "data": {"January 2026": {"DRC": [{"DateStr": "17 Jan 2026", "Event": "Skill Contest – Kinshasa", "Status": "Executed"}], "Regional": [{"DateStr": "05 Jan 2026", "Event": "Virtual Distributor Conference", "Status": "Executed"}]}, "February 2026": {"DRC": [{"DateStr": "15 Feb 2026", "Event": "HLX Day – Kinshasa (500 customers)", "Status": "Executed"}], "Egypt": [{"DateStr": "07 Feb 2026", "Event": "Ronin & Ntorq Launch", "Status": "Executed"}], "Kenya": [{"DateStr": "21 Feb 2026", "Event": "HLX Day Meru- Executed", "Status": "Executed"}, {"DateStr": "26 Feb 2026", "Event": "Inaugration Mombasa 3W Workshop- Delayed ", "Status": "Postponed"}, {"DateStr": "28 Feb 2026", "Event": "EASMC Moto 1- executed", "Status": "Executed"}], "Madagascar": [{"DateStr": "20 Feb 2026", "Event": "3W Launch (Virtual) – Antananarivo", "Status": "Executed"}], "Morocco": [{"DateStr": "21 Feb 2026", "Event": "AOG Iftari at Restaurant in Casablanca", "Status": "Executed"}], "Mozambique": [{"DateStr": "28 Feb 2026", "Event": "Influencer Campaign – Maputo", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "26 Feb 2026", "Event": "TVS South Africa Country Launch", "Status": "Executed"}, {"DateStr": "27 Feb 2026", "Event": "Store Inauguration & Media Ride", "Status": "Executed"}], "Tanzania": [{"DateStr": "18 Feb 2026", "Event": "HLX Day – Dar es Salaam", "Status": "Executed"}, {"DateStr": "20 Feb 2026", "Event": "DAR 3S - COCO Inaguration", "Status": NaN}, {"DateStr": "26 Feb 2026", "Event": "Iringa 3S - COCO Inaguration", "Status": NaN}, {"DateStr": "27 Feb 2026", "Event": "DAR MSV - 7 vehicles flag off", "Status": NaN}, {"DateStr": "28 Feb 2026", "Event": "3S Dealer inaguration - Kahama", "Status": NaN}]}, "March 2026": {"DRC": [{"DateStr": "13 Mar 2026", "Event": "HLX Day – Kisangani (250)", "Status": "Postponed"}], "Egypt": [{"DateStr": "02 Mar 2026", "Event": "Ramadan Advertisements in TV and Social Media", "Status": "Executed"}, {"DateStr": "20 Mar 2026", "Event": "Local Football sponsor with HLX range promotions", "Status": "Executed"}], "Kenya": [{"DateStr": "07 Mar 2026", "Event": "Tris academy launch - Executed", "Status": "Executed"}, {"DateStr": "21 Mar 2026", "Event": "HLX Day-Kisii", "Status": "Yet to Happen"}, {"DateStr": "23 Mar 2026", "Event": "Silver Groove and Saatwai dealer opening", "Status": "Yet to Happen"}, {"DateStr": "25 Mar 2026", "Event": "Nyeri Polytechnic PTC - Inaguration", "Status": "Yet to Happen"}, {"DateStr": "28 Mar 2026", "Event": "Motorsport excellence award", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "20 Mar 2026", "Event": "Regional 3W launch at Fort Dhauphin followed by service camp", "Status": "Yet to Happen"}], "Morocco": [{"DateStr": "01 Mar 2026", "Event": "AOG 80kms ride to Mazagan Beach", "Status": "Executed"}, {"DateStr": "28 Mar 2026", "Event": "Anniversary Celebration / Mass Delivery", "Status": "Yet to Happen"}, {"DateStr": "29 Mar 2026", "Event": "Apache AOG rides & stunt show at Sindibad", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "02 Mar 2026", "Event": "Cape Town Store Launch", "Status": "Executed"}, {"DateStr": "15 Mar 2026", "Event": "Store Inaugration  Centurion, Pretoria,", "Status": "Executed"}], "Tanzania": [{"DateStr": "18 Mar 2026", "Event": "3S Dealer inaguration - Dodoma", "Status": NaN}, {"DateStr": "18 Mar 2026", "Event": "HLX Day – Arusha", "Status": "Yet to Happen"}, {"DateStr": "20 Mar 2026", "Event": "Shinyanga 3S - COCO Inaguration", "Status": "Yet to Happen"}, {"DateStr": "23 Mar 2026", "Event": "2S COCO inaguration - Ilala", "Status": "Yet to Happen"}, {"DateStr": "25 Mar 2026", "Event": "HLX Day – Mwanza", "Status": "Yet to Happen"}], "Uganda": [{"DateStr": "25 Mar 2026", "Event": "HLX 125 5G - Launch", "Status": "Yet to Happen"}]}, "April 2026": {"DRC": [{"DateStr": "10 Apr 2026", "Event": "3S Inauguration – Kinshasa (Mont Ngfula)", "Status": "Yet to Happen"}, {"DateStr": "15 Apr 2026", "Event": "Product Training Center – Kinshasa", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "HLX Day - Lubumbashi (300)", "Status": "Yet to Happen"}], "Egypt": [{"DateStr": "10 Apr 2026", "Event": "XL 100  Dealer launch", "Status": "Yet to Happen"}, {"DateStr": "25 Apr 2026", "Event": "Raider 125 launch", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "17 Apr 2026", "Event": "Boda Girls Launch", "Status": "Yet to Happen"}, {"DateStr": "22 Apr 2026", "Event": "AOG Flag off", "Status": "Yet to Happen"}, {"DateStr": "25 Apr 2026", "Event": "HLX family day - Eldoret", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "20 Apr 2026", "Event": "HLX Day-Antanarivo", "Status": "Yet to Happen"}], "Mozambique": [{"DateStr": "10 Apr 2026", "Event": "3S & PTC Inauguration – Beira", "Status": "Yet to Happen"}], "Regional": [{"DateStr": "15 Apr 2026", "Event": "Virtual Distributor Conference 2.0", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "15 Apr 2026", "Event": "Tie ups with Riding School", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "Store Inaugration  Ekrold, Durban", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "HLX Day-Cape Town", "Status": "Yet to Happen"}], "Tanzania": [{"DateStr": "15 Apr 2026", "Event": "HLX Day – Kahama", "Status": "Yet to Happen"}, {"DateStr": "24 Apr 2026", "Event": "PTC Inaguration - Don Bosco", "Status": "Yet to Happen"}], "Uganda": [{"DateStr": "10 Apr 2026", "Event": "HLX 100 Project - Rollout", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "02 Apr 2026", "Event": "Pre launch Campaign", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "TVS Zambia Country Launch", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "3S Inauguration – Lusaka", "Status": "Yet to Happen"}, {"DateStr": "18 Apr 2026", "Event": "3W Inauguration – Ndola & Solwezi", "Status": "Yet to Happen"}]}, "May 2026": {"DRC": [{"DateStr": "15 May 2026", "Event": "DRC dealer visit to India", "Status": "Yet to Happen"}, {"DateStr": "18 May 2026", "Event": "Mobile Service – Kisangani", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "07 May 2026", "Event": "TVS iQube Launch", "Status": "Yet to Happen"}, {"DateStr": "23 May 2026", "Event": "RR 310 Launch", "Status": "Yet to Happen"}, {"DateStr": "28 May 2026", "Event": "Meru C&G branch inauguration", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "15 May 2026", "Event": "Regional 3W launch at Diego and store inaugartion; Service Camp in Ambolobe", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "07 May 2026", "Event": "India Visit- 7 Dealers", "Status": "Yet to Happen"}, {"DateStr": "18 May 2026", "Event": "Store Inaugration  Tex,George", "Status": "Yet to Happen"}], "Tanzania": [{"DateStr": "15 May 2026", "Event": "HLX Day – Morogoro", "Status": "Yet to Happen"}], "Tunisia": [{"DateStr": "15 May 2026", "Event": "Tunisia Market launch- Ntorq RE, Raider 125r, XL 100 AW, Neo NX, Rockz125", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "28 May 2026", "Event": "PTC Inauguration – Zambia", "Status": "Yet to Happen"}]}, "June 2026": {"DRC": [{"DateStr": "02 Jun 2026", "Event": "3S Inauguration – Lubumbashi", "Status": "Yet to Happen"}, {"DateStr": "10 Jun 2026", "Event": "Assembly Line – Kinshasa", "Status": "Yet to Happen"}, {"DateStr": "15 Jun 2026", "Event": "Deluxe Plus nextGen - Lubumbashi launch", "Status": "Yet to Happen"}], "Egypt": [{"DateStr": "12 Jun 2026", "Event": "ARE & APP", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "02 Jun 2026", "Event": "Kenya dealer visit", "Status": "Yet to Happen"}, {"DateStr": "12 Jun 2026", "Event": "ARE", "Status": "Yet to Happen"}, {"DateStr": "15 Jun 2026", "Event": "Ngong C&G branch inauguration", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "02 Jun 2026", "Event": "3S Inaugartion at Majhunga", "Status": "Yet to Happen"}], "Mozambique": [{"DateStr": "10 Jun 2026", "Event": "3S Inauguration – Nampula", "Status": "Yet to Happen"}, {"DateStr": "12 Jun 2026", "Event": "Assembly Line – Beira", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "15 Jun 2026", "Event": "Driving School Inauguration – Zambia", "Status": "Yet to Happen"}]}}};
+const RAW = {"months": ["January 2026", "February 2026", "March 2026", "April 2026", "May 2026", "June 2026", "July 2026", "December 2026"], "data": {"January 2026": {"DRC": [{"DateStr": "17 Jan 2026", "Event": "Skill Contest – Kinshasa", "Status": "Executed"}], "Regional": [{"DateStr": "05 Jan 2026", "Event": "Virtual Distributor Conference", "Status": "Executed"}]}, "February 2026": {"DRC": [{"DateStr": "15 Feb 2026", "Event": "HLX Day – Kinshasa (500 customers)", "Status": "Executed"}], "Egypt": [{"DateStr": "07 Feb 2026", "Event": "Ronin & Ntorq Launch", "Status": "Executed"}], "Kenya": [{"DateStr": "21 Feb 2026", "Event": "HLX Day Meru", "Status": "Executed"}, {"DateStr": "26 Feb 2026", "Event": "Inaugration Mombasa 3W Workshop", "Status": "Postponed"}, {"DateStr": "28 Feb 2026", "Event": "EASMC Moto 1", "Status": "Executed"}], "Madagascar": [{"DateStr": "20 Feb 2026", "Event": "3W Launch (Virtual) – Antananarivo", "Status": "Executed"}], "Morocco": [{"DateStr": "21 Feb 2026", "Event": "AOG Iftari at Restaurant in Casablanca", "Status": "Executed"}], "Mozambique": [{"DateStr": "28 Feb 2026", "Event": "Influencer Campaign – Maputo", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "26 Feb 2026", "Event": "TVS South Africa Country Launch", "Status": "Executed"}, {"DateStr": "27 Feb 2026", "Event": "Store Inauguration & Media Ride", "Status": "Executed"}], "Tanzania": [{"DateStr": "18 Feb 2026", "Event": "HLX Day – Dar es Salaam", "Status": "Executed"}, {"DateStr": "20 Feb 2026", "Event": "DAR 3S - COCO Inaguration", "Status": ""}, {"DateStr": "26 Feb 2026", "Event": "Iringa 3S - COCO Inaguration", "Status": ""}, {"DateStr": "27 Feb 2026", "Event": "DAR MSV - 7 vehicles flag off", "Status": ""}, {"DateStr": "28 Feb 2026", "Event": "3S Dealer inaguration - Kahama", "Status": ""}]}, "March 2026": {"DRC": [{"DateStr": "13 Mar 2026", "Event": "HLX Day – Kisangani (250)", "Status": "Postponed"}], "Egypt": [{"DateStr": "02 Mar 2026", "Event": "Ramadan Advertisements in TV and Social Media", "Status": "Executed"}, {"DateStr": "20 Mar 2026", "Event": "Local Football sponsor with HLX range promotions", "Status": "Executed"}], "Kenya": [{"DateStr": "07 Mar 2026", "Event": "Tris academy launch ", "Status": "Executed"}, {"DateStr": "21 Mar 2026", "Event": "HLX Day-Kisii", "Status": "Yet to Happen"}, {"DateStr": "23 Mar 2026", "Event": "Silver Groove and Saatwai dealer opening", "Status": "Yet to Happen"}, {"DateStr": "25 Mar 2026", "Event": "Nyeri Polytechnic PTC - Inaguration", "Status": "Yet to Happen"}, {"DateStr": "28 Mar 2026", "Event": "Motorsport excellence award", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "20 Mar 2026", "Event": "Regional 3W launch at Fort Dhauphin followed by service camp", "Status": "Yet to Happen"}], "Morocco": [{"DateStr": "01 Mar 2026", "Event": "AOG 80kms ride to Mazagan Beach", "Status": "Executed"}, {"DateStr": "28 Mar 2026", "Event": "Anniversary Celebration / Mass Delivery", "Status": "Yet to Happen"}, {"DateStr": "29 Mar 2026", "Event": "Apache AOG rides & stunt show at Sindibad", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "02 Mar 2026", "Event": "Cape Town Store Launch", "Status": "Executed"}, {"DateStr": "15 Mar 2026", "Event": "Store Inaugration  Centurion, Pretoria,", "Status": "Postponed"}], "Tanzania": [{"DateStr": "18 Mar 2026", "Event": "3S Dealer inaguration - Dodoma", "Status": ""}, {"DateStr": "18 Mar 2026", "Event": "HLX Day – Arusha", "Status": "Yet to Happen"}, {"DateStr": "20 Mar 2026", "Event": "Shinyanga 3S - COCO Inaguration", "Status": "Yet to Happen"}, {"DateStr": "23 Mar 2026", "Event": "2S COCO inaguration - Ilala", "Status": "Yet to Happen"}, {"DateStr": "25 Mar 2026", "Event": "HLX Day – Mwanza", "Status": "Yet to Happen"}], "Uganda": [{"DateStr": "25 Mar 2026", "Event": "HLX 125 5G - Launch", "Status": "Yet to Happen"}]}, "April 2026": {"DRC": [{"DateStr": "10 Apr 2026", "Event": "3S Inauguration – Kinshasa (Mont Ngfula)", "Status": "Yet to Happen"}, {"DateStr": "15 Apr 2026", "Event": "Product Training Center – Kinshasa", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "HLX Day - Lubumbashi (300)", "Status": "Yet to Happen"}], "Egypt": [{"DateStr": "10 Apr 2026", "Event": "XL 100  Dealer launch", "Status": "Yet to Happen"}, {"DateStr": "25 Apr 2026", "Event": "Raider 125 launch", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "17 Apr 2026", "Event": "Boda Girls Launch", "Status": "Yet to Happen"}, {"DateStr": "22 Apr 2026", "Event": "AOG Flag off", "Status": "Yet to Happen"}, {"DateStr": "25 Apr 2026", "Event": "HLX family day - Eldoret", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "20 Apr 2026", "Event": "HLX Day-Antanarivo", "Status": "Yet to Happen"}], "Mozambique": [{"DateStr": "10 Apr 2026", "Event": "3S & PTC Inauguration – Beira", "Status": "Yet to Happen"}], "Regional": [{"DateStr": "15 Apr 2026", "Event": "Virtual Distributor Conference 2.0", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "15 Apr 2026", "Event": "Tie ups with Riding School", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "Store Inaugration  Ekrold, Durban", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "HLX Day-Cape Town", "Status": "Yet to Happen"}], "Tanzania": [{"DateStr": "15 Apr 2026", "Event": "HLX Day – Kahama", "Status": "Yet to Happen"}, {"DateStr": "24 Apr 2026", "Event": "PTC Inaguration - Don Bosco", "Status": "Yet to Happen"}], "Uganda": [{"DateStr": "10 Apr 2026", "Event": "HLX 100 Project - Rollout", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "02 Apr 2026", "Event": "Pre launch Campaign", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "TVS Zambia Country Launch", "Status": "Yet to Happen"}, {"DateStr": "17 Apr 2026", "Event": "3S Inauguration – Lusaka", "Status": "Yet to Happen"}, {"DateStr": "18 Apr 2026", "Event": "3W Inauguration – Ndola & Solwezi", "Status": "Yet to Happen"}]}, "May 2026": {"DRC": [{"DateStr": "15 May 2026", "Event": "DRC dealer visit to India", "Status": "Yet to Happen"}, {"DateStr": "18 May 2026", "Event": "Mobile Service – Kisangani", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "07 May 2026", "Event": "TVS iQube Launch", "Status": "Yet to Happen"}, {"DateStr": "23 May 2026", "Event": "RR 310 Launch", "Status": "Yet to Happen"}, {"DateStr": "28 May 2026", "Event": "Meru C&G branch inauguration", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "15 May 2026", "Event": "Regional 3W launch at Diego and store inaugartion; Service Camp in Ambolobe", "Status": "Yet to Happen"}], "South Africa": [{"DateStr": "07 May 2026", "Event": "India Visit- 7 Dealers", "Status": "Yet to Happen"}, {"DateStr": "18 May 2026", "Event": "Store Inaugration  Tex,George", "Status": "Yet to Happen"}], "Tanzania": [{"DateStr": "15 May 2026", "Event": "HLX Day – Morogoro", "Status": "Yet to Happen"}], "Tunisia": [{"DateStr": "15 May 2026", "Event": "Tunisia Market launch- Ntorq RE, Raider 125r, XL 100 AW, Neo NX, Rockz125", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "28 May 2026", "Event": "PTC Inauguration – Zambia", "Status": "Yet to Happen"}]}, "June 2026": {"DRC": [{"DateStr": "02 Jun 2026", "Event": "3S Inauguration – Lubumbashi", "Status": "Yet to Happen"}, {"DateStr": "10 Jun 2026", "Event": "Assembly Line – Kinshasa", "Status": "Yet to Happen"}, {"DateStr": "15 Jun 2026", "Event": "Deluxe Plus nextGen - Lubumbashi launch", "Status": "Yet to Happen"}], "Egypt": [{"DateStr": "12 Jun 2026", "Event": "ARE & APP", "Status": "Yet to Happen"}], "Kenya": [{"DateStr": "02 Jun 2026", "Event": "Kenya dealer visit", "Status": "Yet to Happen"}, {"DateStr": "12 Jun 2026", "Event": "ARE", "Status": "Yet to Happen"}, {"DateStr": "15 Jun 2026", "Event": "Ngong C&G branch inauguration", "Status": "Yet to Happen"}], "Madagascar": [{"DateStr": "02 Jun 2026", "Event": "3S Inaugartion at Majhunga", "Status": "Yet to Happen"}], "Mozambique": [{"DateStr": "10 Jun 2026", "Event": "3S Inauguration – Nampula", "Status": "Yet to Happen"}, {"DateStr": "12 Jun 2026", "Event": "Assembly Line – Beira", "Status": "Yet to Happen"}], "Zambia": [{"DateStr": "15 Jun 2026", "Event": "Driving School Inauguration – Zambia", "Status": "Yet to Happen"}]}, "July 2026": {"Kenya": [{"DateStr": "27 Jul 2026", "Event": "JSB BDAY", "Status": "Yet to Happen"}, {"DateStr": "31 Jul 2026", "Event": "JSB Dad BDAY", "Status": "Yet to Happen"}]}, "December 2026": {"Kenya": [{"DateStr": "15 Dec 2026", "Event": "Jamhuri Day", "Status": "Yet to Happen"}]}}};
 const FLAGS = {
   DRC:'🇨🇩', Egypt:'🇪🇬', Kenya:'🇰🇪', Madagascar:'🇲🇬', Morocco:'🇲🇦',
   Mozambique:'🇲🇿', Regional:'🌍', 'South Africa':'🇿🇦', Tanzania:'🇹🇿',
   Tunisia:'🇹🇳', Uganda:'🇺🇬', Zambia:'🇿🇲'
 };
+let currentMonth = null;
 
-const ALL_COUNTRIES = [...new Set(RAW.months.flatMap(m => Object.keys(RAW.data[m])))].sort();
-let activeMonth = null, activeCountry = null;
-
-function countEventsInMonth(m)   { return Object.values(RAW.data[m]).reduce((s,e)=>s+e.length,0); }
-function countEventsForCountry(c) { return RAW.months.reduce((s,m)=>s+(RAW.data[m][c]?.length||0),0); }
-
+function countEvents(m) { return Object.values(RAW.data[m]).reduce((s,e)=>s+e.length,0); }
+function getStats(month) {
+  const c={executed:0,postponed:0,yet:0,unknown:0};
+  (month?[month]:RAW.months).forEach(m=>Object.values(RAW.data[m]).forEach(evts=>evts.forEach(e=>{
+    const s=(e.Status||'').toLowerCase();
+    if(s.includes('executed'))c.executed++;
+    else if(s.includes('postponed'))c.postponed++;
+    else if(s.includes('yet'))c.yet++;
+    else c.unknown++;
+  })));
+  return c;
+}
 function badgeClass(s) {
-  if(!s) return 'badge-unknown';
+  if(!s)return 'badge-unknown';
   const l=s.toLowerCase();
-  if(l.includes('executed'))  return 'badge-executed';
-  if(l.includes('postponed')) return 'badge-postponed';
-  if(l.includes('yet'))       return 'badge-yet';
+  if(l.includes('executed'))return 'badge-executed';
+  if(l.includes('postponed'))return 'badge-postponed';
+  if(l.includes('yet'))return 'badge-yet';
   return 'badge-unknown';
 }
 function badgeLabel(s) {
-  if(!s) return '—';
-  if(s.toLowerCase().includes('executed'))  return 'Executed';
-  if(s.toLowerCase().includes('postponed')) return 'Postponed';
-  if(s.toLowerCase().includes('yet'))       return 'Upcoming';
+  if(!s)return '—';
+  if(s.toLowerCase().includes('executed'))return 'Executed';
+  if(s.toLowerCase().includes('postponed'))return 'Postponed';
+  if(s.toLowerCase().includes('yet'))return 'Upcoming';
   return s;
 }
-
-function renderFilterBar() {
-  const bar = document.getElementById('filterBar');
-  bar.querySelectorAll('.filter-tag').forEach(t=>t.remove());
-  const noF = document.getElementById('noFilters');
-  if (!activeMonth && !activeCountry) { noF.style.display='inline'; return; }
-  noF.style.display = 'none';
-  if (activeMonth) {
-    const t = document.createElement('div');
-    t.className = 'filter-tag';
-    t.innerHTML = `📅 ${activeMonth} <button onclick="clearMonth()">✕</button>`;
-    bar.appendChild(t);
-  }
-  if (activeCountry) {
-    const t = document.createElement('div');
-    t.className = 'filter-tag blue';
-    t.innerHTML = `${FLAGS[activeCountry]||'🌐'} ${activeCountry} <button onclick="clearCountry()">✕</button>`;
-    bar.appendChild(t);
-  }
-}
-function clearMonth()   { activeMonth=null;   applyFilters(); }
-function clearCountry() { activeCountry=null; applyFilters(); }
-
-function renderStats() {
-  const months = activeMonth ? [activeMonth] : RAW.months;
-  const c = {executed:0,postponed:0,yet:0,unknown:0};
-  months.forEach(m => {
-    const entries = Object.entries(RAW.data[m]).filter(([k])=>!activeCountry||k===activeCountry);
-    entries.forEach(([,evts])=>evts.forEach(e=>{
-      const s=(e.Status||'').toLowerCase();
-      if(s.includes('executed'))c.executed++;
-      else if(s.includes('postponed'))c.postponed++;
-      else if(s.includes('yet'))c.yet++;
-      else c.unknown++;
-    }));
-  });
-  const total=c.executed+c.postponed+c.yet+c.unknown;
+function renderStats(month) {
+  const s=getStats(month),total=s.executed+s.postponed+s.yet+s.unknown;
   document.getElementById('statsBar').innerHTML=`
     <div class="stat-pill total"><div class="dot"></div>${total} Total Events</div>
-    <div class="stat-pill executed"><div class="dot"></div>${c.executed} Executed</div>
-    <div class="stat-pill postponed"><div class="dot"></div>${c.postponed} Postponed</div>
-    <div class="stat-pill yet"><div class="dot"></div>${c.yet} Upcoming</div>`;
+    <div class="stat-pill executed"><div class="dot"></div>${s.executed} Executed</div>
+    <div class="stat-pill postponed"><div class="dot"></div>${s.postponed} Postponed</div>
+    <div class="stat-pill yet"><div class="dot"></div>${s.yet} Upcoming</div>`;
 }
-
-function renderMain() {
-  const months = activeMonth ? [activeMonth] : RAW.months;
-  let html = '';
-  months.forEach(m => {
-    const entries = Object.entries(RAW.data[m]).filter(([c])=>!activeCountry||c===activeCountry);
-    if (!entries.length) return;
-    const [mon,yr] = m.split(' ');
-    html += `<div class="month-section">
-      <div class="month-title">${mon} <span class="year">${yr}</span></div>
-      <div class="country-grid">
-        ${entries.map(([country,events])=>`
-          <div class="country-card">
-            <div class="country-header">
-              <div class="country-flag">${FLAGS[country]||'🌐'}</div>
-              <div class="country-name">${country}</div>
-              <div class="country-event-count">${events.length} event${events.length!==1?'s':''}</div>
-            </div>
-            <div class="event-list">
-              ${events.map(e=>`
-                <div class="event-row">
-                  <div class="event-date">${e.DateStr||'—'}</div>
-                  <div class="event-info"><div class="event-name">${e.Event}</div></div>
-                  <div class="status-badge ${badgeClass(e.Status)}">${badgeLabel(e.Status)}</div>
-                </div>`).join('')}
-            </div>
-          </div>`).join('')}
+function renderGrid(month) {
+  const months=month?[month]:RAW.months;
+  const [mon,yr]=month?month.split(' '):['All','Months'];
+  document.getElementById('monthTitle').innerHTML=month
+    ?`${mon} <span class="year">${yr}</span>`
+    :`All <span class="year">Months · 2026</span>`;
+  const seen=new Map();
+  months.forEach(m=>Object.entries(RAW.data[m]).forEach(([country,events])=>{
+    if(!seen.has(country))seen.set(country,[]);
+    seen.get(country).push(...events);
+  }));
+  if(!seen.size){document.getElementById('countryGrid').innerHTML='<div class="empty"><p>No events found.</p></div>';return;}
+  document.getElementById('countryGrid').innerHTML=[...seen.entries()].map(([country,events])=>`
+    <div class="country-card">
+      <div class="country-header">
+        <div class="country-flag">${FLAGS[country]||'🌐'}</div>
+        <div class="country-name">${country}</div>
+        <div class="country-event-count">${events.length} event${events.length!==1?'s':''}</div>
       </div>
-    </div>`;
-  });
-  document.getElementById('main').innerHTML = html || '<div class="empty">No events match your filters.</div>';
+      <div class="event-list">${events.map(e=>`
+        <div class="event-row">
+          <div class="event-date">${e.DateStr||'—'}</div>
+          <div class="event-info"><div class="event-name">${e.Event}</div></div>
+          <div class="status-badge ${badgeClass(e.Status)}">${badgeLabel(e.Status)}</div>
+        </div>`).join('')}</div>
+    </div>`).join('');
 }
-
-function applyFilters() {
-  document.getElementById('monthLabel').textContent   = activeMonth   || 'All Months';
-  document.getElementById('countryLabel').textContent = activeCountry || 'All Countries';
-  document.querySelectorAll('#monthMenu .dropdown-item').forEach(i=>i.classList.toggle('active',(i.dataset.value||null)===activeMonth));
-  document.querySelectorAll('#countryMenu .dropdown-item').forEach(i=>i.classList.toggle('active',(i.dataset.value||null)===activeCountry));
-  renderFilterBar(); renderStats(); renderMain();
+function buildDropdown() {
+  const menu=document.getElementById('dropdownMenu');
+  const total=RAW.months.reduce((s,m)=>s+countEvents(m),0);
+  menu.innerHTML=`<div class="dropdown-item active" data-month="">All Months <span class="event-count">${total} events</span></div>`
+    +RAW.months.map(m=>`<div class="dropdown-item" data-month="${m}">${m} <span class="event-count">${countEvents(m)} events</span></div>`).join('');
+  menu.querySelectorAll('.dropdown-item').forEach(item=>
+    item.addEventListener('click',()=>{selectMonth(item.dataset.month||null);closeDropdown();}));
 }
-
-function buildMonthDropdown() {
-  const total = RAW.months.reduce((s,m)=>s+countEventsInMonth(m),0);
-  document.getElementById('monthMenu').innerHTML =
-    `<div class="dropdown-item active" data-value="">All Months <span class="event-count">${total}</span></div>`
-    + RAW.months.map(m=>`<div class="dropdown-item" data-value="${m}"><span>${m}</span><span class="event-count">${countEventsInMonth(m)}</span></div>`).join('');
-  document.querySelectorAll('#monthMenu .dropdown-item').forEach(i=>
-    i.addEventListener('click',()=>{activeMonth=i.dataset.value||null;applyFilters();closeAll();}));
+function selectMonth(month) {
+  currentMonth=month;
+  document.getElementById('btnLabel').textContent=month||'All Months';
+  document.querySelectorAll('.dropdown-item').forEach(i=>i.classList.toggle('active',(i.dataset.month||null)===month));
+  renderStats(month);renderGrid(month);
 }
-
-function buildCountryDropdown() {
-  const total = ALL_COUNTRIES.reduce((s,c)=>s+countEventsForCountry(c),0);
-  document.getElementById('countryMenu').innerHTML =
-    `<div class="dropdown-item active" data-value=""><span class="item-label">🌍 All Countries</span><span class="event-count">${total}</span></div>`
-    + ALL_COUNTRIES.map(c=>`
-      <div class="dropdown-item" data-value="${c}">
-        <span class="item-label"><span>${FLAGS[c]||'🌐'}</span>${c}</span>
-        <span class="event-count">${countEventsForCountry(c)}</span>
-      </div>`).join('');
-  document.querySelectorAll('#countryMenu .dropdown-item').forEach(i=>
-    i.addEventListener('click',()=>{activeCountry=i.dataset.value||null;applyFilters();closeAll();}));
-}
-
-function closeAll() {
-  document.querySelectorAll('.dropdown-btn').forEach(b=>b.classList.remove('open'));
-  document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
-}
-function toggleDropdown(btnId, menuId) {
-  const isOpen = document.getElementById(menuId).classList.contains('open');
-  closeAll();
-  if (!isOpen) {
-    document.getElementById(btnId).classList.add('open');
-    document.getElementById(menuId).classList.add('open');
-  }
-}
-
-document.getElementById('monthBtn').addEventListener('click',   e=>{e.stopPropagation();toggleDropdown('monthBtn','monthMenu');});
-document.getElementById('countryBtn').addEventListener('click', e=>{e.stopPropagation();toggleDropdown('countryBtn','countryMenu');});
-document.addEventListener('click', closeAll);
-
-buildMonthDropdown();
-buildCountryDropdown();
-applyFilters();
+const btn=document.getElementById('monthBtn'),menu=document.getElementById('dropdownMenu');
+function openDropdown(){btn.classList.add('open');menu.classList.add('open');}
+function closeDropdown(){btn.classList.remove('open');menu.classList.remove('open');}
+btn.addEventListener('click',e=>{e.stopPropagation();menu.classList.contains('open')?closeDropdown():openDropdown();});
+document.addEventListener('click',e=>{if(!menu.contains(e.target))closeDropdown();});
+buildDropdown();
+selectMonth(null);
 </script>
 </body>
 </html>
