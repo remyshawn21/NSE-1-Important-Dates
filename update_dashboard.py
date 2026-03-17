@@ -14,7 +14,7 @@ Configuration (edit the two lines below if filenames change):
 """
 
 EXCEL_FILE  = "NSE1 Important Dates.xlsx"   # ← your Excel file
-OUTPUT_FILE = "NSE1_Events_Dashboard_TVS.html"      # ← output dashboard
+OUTPUT_FILE = "index.html"      # ← output dashboard
 
 # ─────────────────────────────────────────────────────────────────────────────
 
