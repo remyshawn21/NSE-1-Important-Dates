@@ -141,7 +141,7 @@ def build_html(payload, updated_at, logo_src):
   .dropdown-btn .arrow {{ width: 16px; height: 16px; transition: transform 0.2s; flex-shrink: 0; }}
   .dropdown-btn.open .arrow {{ transform: rotate(180deg); }}
   .dropdown-menu {{
-    position: absolute; top: calc(100% + 8px); left: 0;
+    position: absolute; top: calc(100% + 8px); right: 0;
     background: white; border: 1px solid var(--border); border-radius: 12px;
     overflow: hidden; overflow-y: auto; max-height: 360px;
     box-shadow: 0 16px 48px rgba(0,0,0,0.14);
@@ -353,8 +353,8 @@ def build_html(payload, updated_at, logo_src):
     /* Legend */
     .legend {{ padding: 0 16px 24px; gap: 12px; font-size: 11px; }}
 
-    /* Dropdown menus — wider on mobile */
-    .dropdown-menu {{ min-width: 160px; left: auto; right: 0; }}
+    /* Dropdown menus — anchor to right edge to prevent left overflow */
+    .dropdown-menu {{ min-width: 160px; left: auto !important; right: 0 !important; }}
   }}
 
   @media (max-width: 380px) {{
