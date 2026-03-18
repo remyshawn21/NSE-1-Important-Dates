@@ -268,6 +268,100 @@ def build_html(payload, updated_at, logo_src):
   .legend span {{ font-weight: 600; color: var(--tvs-blue); margin-right: 4px; }}
   .legend-item {{ display: flex; align-items: center; gap: 6px; }}
   .legend-dot {{ width: 10px; height: 10px; border-radius: 50%; }}
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 768px) {{
+
+    /* Header — stack logo+title on left, dropdowns move below */
+    header {{
+      height: auto;
+      padding: 12px 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }}
+    .header-left {{ gap: 10px; }}
+    .tvs-logo {{ height: 36px; padding: 4px 10px; }}
+    .tvs-logo img {{ height: 26px; }}
+    .header-divider {{ display: none; }}
+    .header-title h1 {{ font-size: 14px; }}
+    .header-title p {{ display: none; }}
+    .header-right {{
+      width: 100%;
+      gap: 8px;
+      justify-content: space-between;
+    }}
+    .updated {{ display: none; }}
+    .dropdown-btn {{
+      min-width: 0;
+      flex: 1;
+      font-size: 12px;
+      padding: 9px 12px;
+    }}
+
+    /* Filter bar */
+    .filter-bar {{ padding: 8px 16px; gap: 6px; }}
+
+    /* Stats bar — scrollable single line */
+    .stats-bar {{
+      padding: 10px 16px;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+    .stat-pill {{ font-size: 11px; padding: 5px 10px; }}
+
+    /* Main content */
+    main {{ padding: 16px 16px 40px; }}
+    .month-section {{ margin-bottom: 28px; }}
+    .month-title {{ font-size: 18px; padding-left: 10px; margin-bottom: 12px; }}
+    .month-title .year {{ font-size: 14px; }}
+
+    /* Country grid — single column on mobile */
+    .country-grid {{
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }}
+
+    /* Country cards */
+    .country-header {{ padding: 11px 14px; }}
+    .country-name {{ font-size: 13px; }}
+    .country-flag {{ width: 26px; height: 26px; font-size: 15px; }}
+
+    /* Event rows */
+    .event-row {{ padding: 9px 14px; gap: 8px; }}
+    .event-date {{ min-width: 68px; font-size: 10px; }}
+    .event-name {{ font-size: 12px; }}
+    .status-badge {{ font-size: 9px; padding: 2px 6px; }}
+    .desc-indicator {{ font-size: 9px; padding: 2px 6px; }}
+
+    /* Modal — full screen on mobile */
+    .modal-overlay {{ padding: 0; align-items: flex-end; }}
+    .modal {{
+      border-radius: 20px 20px 0 0;
+      max-width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+    }}
+    .modal-overlay.open .modal {{ transform: translateY(0); }}
+    .modal-header {{ padding: 16px 18px; }}
+    .modal-event {{ font-size: 15px; }}
+    .modal-body {{ padding: 18px; }}
+    .modal-description {{ font-size: 13px; }}
+
+    /* Legend */
+    .legend {{ padding: 0 16px 24px; gap: 12px; font-size: 11px; }}
+
+    /* Dropdown menus — wider on mobile */
+    .dropdown-menu {{ min-width: 160px; left: auto; right: 0; }}
+  }}
+
+  @media (max-width: 380px) {{
+    .header-title h1 {{ font-size: 13px; }}
+    .dropdown-btn {{ font-size: 11px; padding: 8px 10px; }}
+    .month-title {{ font-size: 16px; }}
+  }}
 </style>
 </head>
 <body>
