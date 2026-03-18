@@ -353,8 +353,9 @@ def build_html(payload, updated_at, logo_src):
     /* Legend */
     .legend {{ padding: 0 16px 24px; gap: 12px; font-size: 11px; }}
 
-    /* Dropdown menus — anchor to right edge to prevent left overflow */
-    .dropdown-menu {{ min-width: 160px; left: auto !important; right: 0 !important; }}
+    /* Dropdown menus — month opens left, country opens right */
+    #monthMenu  {{ min-width: 160px; left: 0 !important; right: auto !important; }}
+    #countryMenu {{ min-width: 160px; left: auto !important; right: 0 !important; }}
   }}
 
   @media (max-width: 380px) {{
