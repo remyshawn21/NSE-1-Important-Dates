@@ -88,13 +88,16 @@ def build_html(payload, updated_at, logo_src):
     raw_json  = json.dumps(payload, ensure_ascii=False)
     logo_html = (f'<div class="tvs-logo"><img src="{logo_src}" alt="TVS"/></div>'
                  if logo_src else '<div class="tvs-logo-text">TVS</div>')
-
+    favicon_b64 = logo_src if logo_src else ""
+    
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>TVS NSE1 Important Dates</title>
+<link rel="icon" type="image/jpeg" href="{favicon_b64}"/>
+<link rel="apple-touch-icon" href="{favicon_b64}"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
