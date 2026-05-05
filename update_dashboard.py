@@ -287,56 +287,78 @@ def build_html(payload, updated_at, logo_src):
   /* ── MOBILE RESPONSIVE ── */
   @media (max-width: 768px) {{
 
-    /* Header */
+    /* Header — 3-row stack on mobile:
+       Row 1: logo + title
+       Row 2: last updated
+       Row 3: 3 filter buttons full-width */
     header {{
       height: auto;
-      padding: 12px 16px;
-      flex-wrap: wrap;
-      gap: 10px;
+      padding: 10px 14px 12px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
     }}
-    .header-left {{ gap: 10px; }}
-    .tvs-logo {{ height: 36px; padding: 4px 10px; }}
-    .tvs-logo img {{ height: 26px; }}
+
+    /* Row 1: logo + title side by side */
+    .header-left {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }}
+    .tvs-logo {{ height: 34px; padding: 4px 9px; flex-shrink: 0; }}
+    .tvs-logo img {{ height: 24px; }}
     .header-divider {{ display: none; }}
-    .header-title h1 {{ font-size: 14px; }}
+    .header-title h1 {{
+      font-size: 13px;
+      white-space: normal;
+      line-height: 1.3;
+    }}
     .header-title p {{ display: none; }}
 
-    /* All three buttons on one row, updated text above */
+    /* Row 2: last updated — full width, left-aligned under title */
     .header-right {{
       width: 100%;
-      gap: 4px;
-      justify-content: space-between;
-      flex-wrap: wrap;
       flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
     }}
+    .updated {{
+      display: block;
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      text-align: left;
+      padding-left: 2px;
+    }}
+    .updated strong {{ color: rgba(255,255,255,0.8); }}
+
+    /* Row 3: all three buttons equal width, full viewport */
     .header-btns {{
       display: flex;
       width: 100%;
       gap: 6px;
-      flex-wrap: nowrap;
     }}
-    .updated {{ display: block; font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; width: 100%; text-align: center; margin-bottom: 2px; }}
-
-    /* Month & Country dropdowns share equal space */
+    .dropdown-wrap {{ flex: 1 1 0; }}
     .dropdown-btn {{
+      width: 100%;
       min-width: 0;
       flex: 1 1 0;
       font-size: 11px;
-      padding: 9px 8px;
+      font-weight: 700;
+      padding: 10px 6px;
       justify-content: center;
       gap: 0;
+      box-shadow: none;
     }}
-
-    /* Hide the chevron arrow to save space */
     .dropdown-btn .arrow {{ display: none; }}
-
-    /* Next 60 Days button — fixed size, never shrinks */
     .dropdown-btn.next60Btn {{
-      flex: 0 0 auto;
-      padding: 9px 10px;
+      flex: 1 1 0;
+      width: 100%;
+      padding: 10px 6px;
       font-size: 11px;
       white-space: nowrap;
       min-width: 0;
+      box-shadow: none;
     }}
 
     /* Filter bar */
@@ -400,9 +422,8 @@ def build_html(payload, updated_at, logo_src):
   }}
 
   @media (max-width: 380px) {{
-    .header-title h1 {{ font-size: 13px; }}
-    .dropdown-btn {{ font-size: 10px; padding: 7px 6px; }}
-    .dropdown-btn.next60Btn {{ font-size: 10px; padding: 7px 8px; }}
+    .header-title h1 {{ font-size: 12px; }}
+    .dropdown-btn, .dropdown-btn.next60Btn {{ font-size: 10px; padding: 9px 4px; }}
     .month-title {{ font-size: 16px; }}
   }}
 </style>
