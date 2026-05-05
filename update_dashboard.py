@@ -89,7 +89,7 @@ def build_html(payload, updated_at, logo_src):
     logo_html = (f'<div class="tvs-logo"><img src="{logo_src}" alt="TVS"/></div>'
                  if logo_src else '<div class="tvs-logo-text">TVS</div>')
     favicon_b64 = logo_src if logo_src else ""
-    
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,8 +106,8 @@ def build_html(payload, updated_at, logo_src):
     --tvs-blue: #1B3F8B; --tvs-blue-dark: #142f6a; --tvs-blue-light: #e6ecf8;
     --tvs-red: #CC1313; --tvs-red-dark: #a80f0f;
     --executed: #1a7a4a; --executed-bg: #e8f5ee;
-    --postponed: #b34000; --postponed-bg: #fff3e8;
-    --yet: #1B3F8B; --yet-bg: #e6ecf8;
+    --postponed: #CC1313; --postponed-bg: #fce8e8;
+    --yet: #92650a; --yet-bg: #fffbe6;
     --text: #1a1f2e; --muted: #6b7280;
   }}
   body {{ background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }}
@@ -186,9 +186,9 @@ def build_html(payload, updated_at, logo_src):
   .stat-pill.total .dot {{ background: var(--tvs-blue); }}
   .stat-pill.executed {{ background: var(--executed-bg); color: var(--executed); border-color: #b8dfc9; }}
   .stat-pill.executed .dot {{ background: var(--executed); }}
-  .stat-pill.postponed {{ background: var(--postponed-bg); color: var(--postponed); border-color: #f5d5b8; }}
+  .stat-pill.postponed {{ background: var(--postponed-bg); color: var(--postponed); border-color: #f5b8b8; }}
   .stat-pill.postponed .dot {{ background: var(--postponed); }}
-  .stat-pill.yet {{ background: var(--yet-bg); color: var(--yet); border-color: #c5d3ef; }}
+  .stat-pill.yet {{ background: var(--yet-bg); color: var(--yet); border-color: #e8d48a; }}
   .stat-pill.yet .dot {{ background: var(--yet); }}
 
   main {{ padding: 28px 40px 40px; }}
@@ -232,7 +232,7 @@ def build_html(payload, updated_at, logo_src):
 
   .desc-indicator {{ font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; display: flex; align-items: center; gap: 3px; }}
   .desc-indicator.has  {{ background: #e6ecf8; color: var(--tvs-blue); }}
-  .desc-indicator.warn {{ background: #fff3e8; color: var(--postponed); }}
+  .desc-indicator.warn {{ background: #fce8e8; color: var(--postponed); }}
 
   .empty {{ text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }}
 
@@ -266,6 +266,17 @@ def build_html(payload, updated_at, logo_src):
   .modal-body {{ padding: 22px; }}
   .modal-section-label {{ font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }}
   .modal-description {{ font-size: 14px; line-height: 1.7; color: var(--text); background: var(--surface2); border-radius: 10px; padding: 14px 16px; border-left: 3px solid var(--tvs-blue); }}
+
+  .dropdown-btn.next60Btn {{ min-width: auto; padding: 11px 14px; }}
+  .dropdown-btn.next60Btn.active {{ background: var(--tvs-blue); box-shadow: 0 2px 8px rgba(27,63,139,0.4); }}
+
+  .dropdown-item .check {{ width:16px; height:16px; border:2px solid var(--border); border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }}
+  .dropdown-item.selected .check {{ background:var(--tvs-blue); border-color:var(--tvs-blue); }}
+  .dropdown-item.selected .check::after {{ content:'✓'; color:white; font-size:10px; font-weight:700; }}
+  .dropdown-item.selected {{ background:var(--tvs-blue-light); color:var(--tvs-blue); font-weight:600; }}
+  .dropdown-divider {{ border:none; border-top:2px solid var(--tvs-red); margin:4px 0; }}
+  .dropdown-action {{ padding:10px 16px; font-size:12px; font-weight:600; color:var(--tvs-blue); cursor:pointer; text-align:center; transition:background 0.12s; }}
+  .dropdown-action:hover {{ background:var(--tvs-blue-light); }}
 
   .legend {{ display: flex; gap: 20px; flex-wrap: wrap; padding: 0 40px 32px; font-size: 12px; color: var(--muted); align-items: center; }}
   .legend span {{ font-weight: 600; color: var(--tvs-blue); margin-right: 4px; }}
@@ -397,6 +408,9 @@ def build_html(payload, updated_at, logo_src):
       </button>
       <div class="dropdown-menu" id="countryMenu"></div>
     </div>
+    <button class="dropdown-btn next60Btn" id="next60Btn" onclick="toggleNext60()">
+      📅 Next 60 Days
+    </button>
   </div>
 </header>
 
@@ -445,11 +459,24 @@ const FLAGS = {{
   Tunisia:'🇹🇳', Uganda:'🇺🇬', Zambia:'🇿🇲'
 }};
 const ALL_COUNTRIES = [...new Set(RAW.months.flatMap(m=>Object.keys(RAW.data[m])))].sort();
-let activeMonth=null, activeCountry=null;
 
+// State — now arrays for multi-select
+let selectedMonths   = new Set();  // empty = all
+let selectedCountries = new Set(); // empty = all
+let next60Active     = false;
+
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const NEXT60 = new Date(TODAY); NEXT60.setDate(TODAY.getDate()+60);
+
+function parseDate(str) {{
+  const d = new Date(str); return isNaN(d) ? null : d;
+}}
+
+// ── Counts ───────────────────────────────────────────────────────────────────
 function countEventsInMonth(m)    {{ return Object.values(RAW.data[m]).reduce((s,e)=>s+e.length,0); }}
 function countEventsForCountry(c) {{ return RAW.months.reduce((s,m)=>s+(RAW.data[m][c]?.length||0),0); }}
 
+// ── Badge helpers ─────────────────────────────────────────────────────────────
 function badgeClass(s) {{
   if(!s) return 'badge-unknown';
   const l=s.toLowerCase();
@@ -466,10 +493,8 @@ function badgeLabel(s) {{
   return s;
 }}
 
-// Modal
-let modalData = null;
+// ── Modal ─────────────────────────────────────────────────────────────────────
 function openModal(country, event) {{
-  modalData = event;
   document.getElementById('modalCountry').textContent = country;
   document.getElementById('modalEvent').textContent   = event.Event;
   document.getElementById('modalDate').textContent    = event.DateStr;
@@ -489,40 +514,81 @@ function closeModal(e) {{
 }}
 document.addEventListener('keydown', e => {{ if(e.key==='Escape') closeModalDirect(); }});
 
-// Filter bar
+// ── Filter bar ────────────────────────────────────────────────────────────────
 function renderFilterBar() {{
-  const bar=document.getElementById('filterBar');
+  const bar = document.getElementById('filterBar');
   bar.querySelectorAll('.filter-tag').forEach(t=>t.remove());
-  const noF=document.getElementById('noFilters');
-  if(!activeMonth&&!activeCountry){{noF.style.display='inline';return;}}
+  const noF = document.getElementById('noFilters');
+  const hasFilters = selectedMonths.size || selectedCountries.size || next60Active;
+  if (!hasFilters) {{ noF.style.display='inline'; return; }}
   noF.style.display='none';
-  if(activeMonth){{
-    const t=document.createElement('div'); t.className='filter-tag';
-    t.innerHTML=`📅 ${{activeMonth}} <button onclick="clearMonth()">✕</button>`;
-    bar.appendChild(t);
-  }}
-  if(activeCountry){{
-    const t=document.createElement('div'); t.className='filter-tag blue';
-    t.innerHTML=`${{FLAGS[activeCountry]||'🌐'}} ${{activeCountry}} <button onclick="clearCountry()">✕</button>`;
-    bar.appendChild(t);
-  }}
-}}
-function clearMonth()   {{ activeMonth=null;   applyFilters(); }}
-function clearCountry() {{ activeCountry=null; applyFilters(); }}
 
-function renderStats() {{
-  const months=activeMonth?[activeMonth]:RAW.months;
-  const c={{executed:0,postponed:0,yet:0,unknown:0}};
-  months.forEach(m=>{{
-    Object.entries(RAW.data[m]).filter(([k])=>!activeCountry||k===activeCountry)
-      .forEach(([,evts])=>evts.forEach(e=>{{
-        const s=(e.Status||'').toLowerCase();
-        if(s.includes('executed'))c.executed++;
-        else if(s.includes('postponed'))c.postponed++;
-        else if(s.includes('yet'))c.yet++;
-        else c.unknown++;
-      }}));
+  if (next60Active) {{
+    const t=document.createElement('div'); t.className='filter-tag';
+    t.innerHTML=`📅 Next 60 Days <button onclick="clearNext60()">✕</button>`;
+    bar.appendChild(t);
+  }}
+  selectedMonths.forEach(m=>{{
+    const t=document.createElement('div'); t.className='filter-tag';
+    t.innerHTML=`📅 ${{m}} <button onclick="removeMonth('${{m}}')">✕</button>`;
+    bar.appendChild(t);
   }});
+  selectedCountries.forEach(c=>{{
+    const t=document.createElement('div'); t.className='filter-tag blue';
+    t.innerHTML=`${{FLAGS[c]||'🌐'}} ${{c}} <button onclick="removeCountry('${{c.replace(/'/g,"\\'")}}')">✕</button>`;
+    bar.appendChild(t);
+  }});
+}}
+
+function removeMonth(m)   {{ selectedMonths.delete(m);   applyFilters(); }}
+function removeCountry(c) {{ selectedCountries.delete(c); applyFilters(); }}
+function clearNext60()    {{ next60Active=false; document.getElementById('next60Btn').classList.remove('active'); applyFilters(); }}
+function clearAllFilters(){{ selectedMonths.clear(); selectedCountries.clear(); next60Active=false; document.getElementById('next60Btn').classList.remove('active'); applyFilters(); }}
+
+// ── Next 60 toggle ────────────────────────────────────────────────────────────
+function toggleNext60() {{
+  next60Active = !next60Active;
+  document.getElementById('next60Btn').classList.toggle('active', next60Active);
+  // Clear month/country selections when activating next60
+  if (next60Active) {{ selectedMonths.clear(); selectedCountries.clear(); }}
+  applyFilters();
+}}
+
+// ── Get filtered events ───────────────────────────────────────────────────────
+function getFilteredEntries() {{
+  // Returns array of {{month, country, events[]}}
+  const result = [];
+  const months = selectedMonths.size ? RAW.months.filter(m=>selectedMonths.has(m)) : RAW.months;
+
+  months.forEach(m => {{
+    let entries = Object.entries(RAW.data[m]);
+    if (selectedCountries.size) entries = entries.filter(([c])=>selectedCountries.has(c));
+
+    entries.forEach(([country, events]) => {{
+      let evts = events;
+      if (next60Active) {{
+        evts = events.filter(e => {{
+          const d = parseDate(e.DateStr);
+          return d && d >= TODAY && d <= NEXT60;
+        }});
+      }}
+      if (evts.length) result.push({{ month:m, country, events:evts }});
+    }});
+  }});
+  return result;
+}}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function renderStats() {{
+  const filtered = getFilteredEntries();
+  const c = {{executed:0,postponed:0,yet:0,unknown:0}};
+  filtered.forEach(item => item.events.forEach(e=>{{
+    const s=(e.Status||'').toLowerCase();
+    if(s.includes('executed'))c.executed++;
+    else if(s.includes('postponed'))c.postponed++;
+    else if(s.includes('yet'))c.yet++;
+    else c.unknown++;
+  }}));
   const total=c.executed+c.postponed+c.yet+c.unknown;
   document.getElementById('statsBar').innerHTML=`
     <div class="stat-pill total"><div class="dot"></div>${{total}} Total Events</div>
@@ -531,17 +597,29 @@ function renderStats() {{
     <div class="stat-pill yet"><div class="dot"></div>${{c.yet}} Upcoming</div>`;
 }}
 
+// ── Main grid ─────────────────────────────────────────────────────────────────
 function renderMain() {{
-  const months=activeMonth?[activeMonth]:RAW.months;
+  const filtered = getFilteredEntries();
+  if (!filtered.length) {{
+    document.getElementById('main').innerHTML='<div class="empty">No events match your filters.</div>';
+    return;
+  }}
+
+  // Group by month
+  const byMonth = {{}};
+  filtered.forEach(item => {{
+    const m2=item.month, country2=item.country, events2=item.events;
+    if (!byMonth[m2]) byMonth[m2] = {{}};
+    byMonth[m2][country2] = events2;
+  }});
+
   let html='';
-  months.forEach(m=>{{
-    const entries=Object.entries(RAW.data[m]).filter(([c])=>!activeCountry||c===activeCountry);
-    if(!entries.length) return;
+  RAW.months.filter(m=>byMonth[m]).forEach(m => {{
     const [mon,yr]=m.split(' ');
     html+=`<div class="month-section">
       <div class="month-title">${{mon}} <span class="year">${{yr}}</span></div>
       <div class="country-grid">
-        ${{entries.map(([country,events])=>`
+        ${{Object.entries(byMonth[m]).map(([country,events])=>`
           <div class="country-card">
             <div class="country-header">
               <div class="country-flag">${{FLAGS[country]||'🌐'}}</div>
@@ -550,10 +628,11 @@ function renderMain() {{
             </div>
             <div class="event-list">
               ${{events.map((e,i)=>{{
+                const origIdx = RAW.data[m][country].indexOf(e);
                 const hasDesc  = e.DatePassed && e.Description;
                 const warnDesc = e.DatePassed && !e.Description && e.Status.toLowerCase().includes('executed');
                 const rowClass = hasDesc?'event-row has-desc':warnDesc?'event-row warn-desc':'event-row';
-                const onclick  = hasDesc?`onclick="openModal('${{country.replace(/'/g,"\\'")}}', RAW.data['${{m}}']['${{country}}'][${{i}}])"` :'';
+                const onclick  = hasDesc?`onclick="openModal('${{country.replace(/'/g,"\\'")}}', RAW.data['${{m}}']['${{country}}'][${{origIdx}}])"` :'';
                 const indicator= hasDesc
                   ?`<div class="desc-indicator has">📋 Report</div>`
                   :warnDesc?`<div class="desc-indicator warn">⚠️ Add report</div>`:'';
@@ -571,37 +650,76 @@ function renderMain() {{
       </div>
     </div>`;
   }});
-  document.getElementById('main').innerHTML=html||'<div class="empty">No events match your filters.</div>';
+  document.getElementById('main').innerHTML=html;
 }}
 
+// ── Apply all filters ─────────────────────────────────────────────────────────
 function applyFilters() {{
-  document.getElementById('monthLabel').textContent   = activeMonth   || 'All Months';
-  document.getElementById('countryLabel').textContent = activeCountry || 'All Countries';
-  document.querySelectorAll('#monthMenu .dropdown-item').forEach(i=>i.classList.toggle('active',(i.dataset.value||null)===activeMonth));
-  document.querySelectorAll('#countryMenu .dropdown-item').forEach(i=>i.classList.toggle('active',(i.dataset.value||null)===activeCountry));
+  // Update month button label
+  const mCount = selectedMonths.size;
+  document.getElementById('monthLabel').textContent = mCount===0?'All Months':mCount===1?[...selectedMonths][0]:`${{mCount}} Months`;
+  // Update country button label
+  const cCount = selectedCountries.size;
+  document.getElementById('countryLabel').textContent = cCount===0?'All Countries':cCount===1?[...selectedCountries][0]:`${{cCount}} Countries`;
+  // Sync checkmarks
+  document.querySelectorAll('#monthMenu .dropdown-item[data-value]').forEach(i=>{{
+    i.classList.toggle('selected', selectedMonths.has(i.dataset.value));
+  }});
+  document.querySelectorAll('#countryMenu .dropdown-item[data-value]').forEach(i=>{{
+    i.classList.toggle('selected', selectedCountries.has(i.dataset.value));
+  }});
   renderFilterBar(); renderStats(); renderMain();
 }}
 
+// ── Build dropdowns ───────────────────────────────────────────────────────────
 function buildMonthDropdown() {{
-  const total=RAW.months.reduce((s,m)=>s+countEventsInMonth(m),0);
-  document.getElementById('monthMenu').innerHTML=
-    `<div class="dropdown-item active" data-value="">All Months <span class="event-count">${{total}}</span></div>`
-    +RAW.months.map(m=>`<div class="dropdown-item" data-value="${{m}}"><span>${{m}}</span><span class="event-count">${{countEventsInMonth(m)}}</span></div>`).join('');
-  document.querySelectorAll('#monthMenu .dropdown-item').forEach(i=>
-    i.addEventListener('click',()=>{{activeMonth=i.dataset.value||null;applyFilters();closeAll();}}));
+  const total = RAW.months.reduce((s,m)=>s+countEventsInMonth(m),0);
+  document.getElementById('monthMenu').innerHTML =
+    `<div class="dropdown-action" onclick="selectedMonths.clear();applyFilters()">Clear selection</div>
+     <hr class="dropdown-divider"/>`
+    + RAW.months.map(m=>`
+      <div class="dropdown-item" data-value="${{m}}">
+        <div class="check"></div>
+        <span style="flex:1">${{m}}</span>
+        <span class="event-count">${{countEventsInMonth(m)}}</span>
+      </div>`).join('');
+
+  document.querySelectorAll('#monthMenu .dropdown-item[data-value]').forEach(item=>
+    item.addEventListener('click', e=>{{
+      e.stopPropagation();
+      const v = item.dataset.value;
+      if (selectedMonths.has(v)) selectedMonths.delete(v);
+      else {{ next60Active=false; document.getElementById('next60Btn').classList.remove('active'); selectedMonths.add(v); }}
+      applyFilters();
+    }})
+  );
 }}
 
 function buildCountryDropdown() {{
-  const total=ALL_COUNTRIES.reduce((s,c)=>s+countEventsForCountry(c),0);
-  document.getElementById('countryMenu').innerHTML=
-    `<div class="dropdown-item active" data-value=""><span>🌍 All Countries</span><span class="event-count">${{total}}</span></div>`
-    +ALL_COUNTRIES.map(c=>`<div class="dropdown-item" data-value="${{c}}"><span>${{FLAGS[c]||'🌐'}} ${{c}}</span><span class="event-count">${{countEventsForCountry(c)}}</span></div>`).join('');
-  document.querySelectorAll('#countryMenu .dropdown-item').forEach(i=>
-    i.addEventListener('click',()=>{{activeCountry=i.dataset.value||null;applyFilters();closeAll();}}));
+  document.getElementById('countryMenu').innerHTML =
+    `<div class="dropdown-action" onclick="selectedCountries.clear();applyFilters()">Clear selection</div>
+     <hr class="dropdown-divider"/>`
+    + ALL_COUNTRIES.map(c=>`
+      <div class="dropdown-item" data-value="${{c}}">
+        <div class="check"></div>
+        <span style="flex:1">${{FLAGS[c]||'🌐'}} ${{c}}</span>
+        <span class="event-count">${{countEventsForCountry(c)}}</span>
+      </div>`).join('');
+
+  document.querySelectorAll('#countryMenu .dropdown-item[data-value]').forEach(item=>
+    item.addEventListener('click', e=>{{
+      e.stopPropagation();
+      const v = item.dataset.value;
+      if (selectedCountries.has(v)) selectedCountries.delete(v);
+      else {{ next60Active=false; document.getElementById('next60Btn').classList.remove('active'); selectedCountries.add(v); }}
+      applyFilters();
+    }})
+  );
 }}
 
+// ── Dropdown open/close ───────────────────────────────────────────────────────
 function closeAll() {{
-  document.querySelectorAll('.dropdown-btn').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.dropdown-btn:not(.next60Btn)').forEach(b=>b.classList.remove('open'));
   document.querySelectorAll('.dropdown-menu').forEach(m=>m.classList.remove('open'));
 }}
 function toggleDropdown(btnId,menuId) {{
