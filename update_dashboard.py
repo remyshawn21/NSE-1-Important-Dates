@@ -88,7 +88,6 @@ def build_html(payload, updated_at, logo_src):
     raw_json  = json.dumps(payload, ensure_ascii=False)
     logo_html = (f'<div class="tvs-logo"><img src="{logo_src}" alt="TVS"/></div>'
                  if logo_src else '<div class="tvs-logo-text">TVS</div>')
-    favicon_b64 = logo_src if logo_src else ""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -96,9 +95,9 @@ def build_html(payload, updated_at, logo_src):
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>TVS NSE1 Important Dates</title>
-<link rel="icon" type="image/jpeg" href="{favicon_b64}"/>
-<link rel="apple-touch-icon" href="{favicon_b64}"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231B3F8B'/%3E%3Crect x='0' y='26' width='32' height='4' rx='0' fill='%23CC1313'/%3E%3Ctext x='16' y='21' font-family='Arial Black,sans-serif' font-weight='900' font-size='13' fill='white' text-anchor='middle' letter-spacing='0.5'%3ETVS%3C/text%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231B3F8B'/%3E%3Crect x='0' y='26' width='32' height='4' rx='0' fill='%23CC1313'/%3E%3Ctext x='16' y='21' font-family='Arial Black,sans-serif' font-weight='900' font-size='13' fill='white' text-anchor='middle' letter-spacing='0.5'%3ETVS%3C/text%3E%3C/svg%3E"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
   :root {{
@@ -123,10 +122,10 @@ def build_html(payload, updated_at, logo_src):
   .header-left {{ display: flex; align-items: center; gap: 18px; flex-shrink: 0; }}
   .tvs-logo {{ height: 42px; background: white; border-radius: 7px; padding: 5px 12px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }}
   .tvs-logo img {{ height: 30px; width: auto; display: block; }}
-  .tvs-logo-text {{ font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--tvs-blue); background: white; padding: 6px 14px; border-radius: 7px; }}
+  .tvs-logo-text {{ font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: var(--tvs-blue); background: white; padding: 6px 14px; border-radius: 7px; }}
   .header-divider {{ width: 1px; height: 34px; background: rgba(255,255,255,0.2); flex-shrink: 0; }}
-  .header-title h1 {{ font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: white; white-space: nowrap; }}
-  .header-title p {{ font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 300; white-space: nowrap; }}
+  .header-title h1 {{ font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 700; color: white; white-space: nowrap; }}
+  .header-title p {{ font-family: 'Poppins', sans-serif; font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 400; white-space: nowrap; }}
   .header-right {{ display: flex; align-items: center; gap: 12px; flex-shrink: 0; }}
   .header-btns {{ display: flex; align-items: center; gap: 12px; }}
   .updated {{ font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; }}
@@ -135,7 +134,7 @@ def build_html(payload, updated_at, logo_src):
   .dropdown-wrap {{ position: relative; flex-shrink: 0; }}
   .dropdown-btn {{
     background: var(--tvs-red); color: white; border: none;
-    padding: 11px 16px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 11px 16px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
     border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px;
     transition: background 0.15s, transform 0.1s; min-width: 160px; justify-content: space-between;
     box-shadow: 0 2px 8px rgba(204,19,19,0.4); white-space: nowrap;
@@ -195,7 +194,7 @@ def build_html(payload, updated_at, logo_src):
   main {{ padding: 28px 40px 40px; }}
   .month-section {{ margin-bottom: 36px; }}
   .month-title {{
-    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+    font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800;
     letter-spacing: -0.5px; margin-bottom: 16px;
     display: flex; align-items: baseline; gap: 10px;
     color: var(--tvs-blue); border-left: 4px solid var(--tvs-red); padding-left: 14px;
@@ -209,7 +208,7 @@ def build_html(payload, updated_at, logo_src):
   .country-card:hover {{ border-color: var(--tvs-blue); box-shadow: 0 6px 24px rgba(27,63,139,0.13); transform: translateY(-2px); }}
   .country-header {{ padding: 13px 16px; display: flex; align-items: center; gap: 10px; background: var(--tvs-blue); border-bottom: 3px solid var(--tvs-red); }}
   .country-flag {{ width: 30px; height: 30px; border-radius: 6px; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }}
-  .country-name {{ font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; flex: 1; color: white; }}
+  .country-name {{ font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; flex: 1; color: white; }}
   .country-event-count {{ font-size: 11px; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.12); padding: 2px 9px; border-radius: 20px; }}
   .event-list {{ padding: 6px 0; }}
 
@@ -259,7 +258,7 @@ def build_html(payload, updated_at, logo_src):
   }}
   .modal-header-info {{ flex: 1; min-width: 0; }}
   .modal-country {{ font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }}
-  .modal-event {{ font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: white; line-height: 1.3; }}
+  .modal-event {{ font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: white; line-height: 1.3; }}
   .modal-meta {{ display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }}
   .modal-date {{ font-size: 11px; color: rgba(255,255,255,0.65); }}
   .modal-close {{ background: rgba(255,255,255,0.15); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }}
