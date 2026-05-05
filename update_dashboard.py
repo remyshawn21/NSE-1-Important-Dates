@@ -267,7 +267,7 @@ def build_html(payload, updated_at, logo_src):
   .modal-section-label {{ font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }}
   .modal-description {{ font-size: 14px; line-height: 1.7; color: var(--text); background: var(--surface2); border-radius: 10px; padding: 14px 16px; border-left: 3px solid var(--tvs-blue); }}
 
-  .dropdown-btn.next60Btn {{ min-width: auto; padding: 11px 14px; }}
+  .dropdown-btn.next60Btn {{ min-width: auto; padding: 11px 14px; white-space: nowrap; }}
   .dropdown-btn.next60Btn.active {{ background: var(--tvs-blue); box-shadow: 0 2px 8px rgba(27,63,139,0.4); }}
 
   .dropdown-item .check {{ width:16px; height:16px; border:2px solid var(--border); border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }}
@@ -286,7 +286,7 @@ def build_html(payload, updated_at, logo_src):
   /* ── MOBILE RESPONSIVE ── */
   @media (max-width: 768px) {{
 
-    /* Header — stack logo+title on left, dropdowns move below */
+    /* Header */
     header {{
       height: auto;
       padding: 12px 16px;
@@ -299,17 +299,36 @@ def build_html(payload, updated_at, logo_src):
     .header-divider {{ display: none; }}
     .header-title h1 {{ font-size: 14px; }}
     .header-title p {{ display: none; }}
+
+    /* All three buttons on one row, no wrapping */
     .header-right {{
       width: 100%;
-      gap: 8px;
+      gap: 6px;
       justify-content: space-between;
+      flex-wrap: nowrap;
     }}
     .updated {{ display: none; }}
+
+    /* Month & Country dropdowns share equal space */
     .dropdown-btn {{
       min-width: 0;
-      flex: 1;
-      font-size: 12px;
-      padding: 9px 12px;
+      flex: 1 1 0;
+      font-size: 11px;
+      padding: 9px 8px;
+      justify-content: center;
+      gap: 0;
+    }}
+
+    /* Hide the chevron arrow to save space */
+    .dropdown-btn .arrow {{ display: none; }}
+
+    /* Next 60 Days button — fixed size, never shrinks */
+    .dropdown-btn.next60Btn {{
+      flex: 0 0 auto;
+      padding: 9px 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      min-width: 0;
     }}
 
     /* Filter bar */
@@ -349,7 +368,7 @@ def build_html(payload, updated_at, logo_src):
     .status-badge {{ font-size: 9px; padding: 2px 6px; }}
     .desc-indicator {{ font-size: 9px; padding: 2px 6px; }}
 
-    /* Modal — full screen on mobile */
+    /* Modal — slide up from bottom on mobile */
     .modal-overlay {{ padding: 0; align-items: flex-end; }}
     .modal {{
       border-radius: 20px 20px 0 0;
@@ -367,14 +386,15 @@ def build_html(payload, updated_at, logo_src):
     /* Legend */
     .legend {{ padding: 0 16px 24px; gap: 12px; font-size: 11px; }}
 
-    /* Dropdown menus — month opens left, country opens right */
+    /* Dropdown menus positioning */
     #monthMenu  {{ min-width: 160px; left: 0 !important; right: auto !important; }}
     #countryMenu {{ min-width: 160px; left: auto !important; right: 0 !important; }}
   }}
 
   @media (max-width: 380px) {{
     .header-title h1 {{ font-size: 13px; }}
-    .dropdown-btn {{ font-size: 11px; padding: 8px 10px; }}
+    .dropdown-btn {{ font-size: 10px; padding: 7px 6px; }}
+    .dropdown-btn.next60Btn {{ font-size: 10px; padding: 7px 8px; }}
     .month-title {{ font-size: 16px; }}
   }}
 </style>
