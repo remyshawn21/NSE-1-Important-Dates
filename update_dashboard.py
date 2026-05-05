@@ -599,8 +599,8 @@ function clearAllFilters(){{ selectedMonths.clear(); selectedCountries.clear(); 
 function toggleNext60() {{
   next60Active = !next60Active;
   document.getElementById('next60Btn').classList.toggle('active', next60Active);
-  // Clear month/country selections when activating next60
-  if (next60Active) {{ selectedMonths.clear(); selectedCountries.clear(); }}
+  // Only clear month selections (month + next60 conflict); country filters are kept
+  if (next60Active) {{ selectedMonths.clear(); }}
   applyFilters();
 }}
 
@@ -761,7 +761,7 @@ function buildCountryDropdown() {{
       e.stopPropagation();
       const v = item.dataset.value;
       if (selectedCountries.has(v)) selectedCountries.delete(v);
-      else {{ next60Active=false; document.getElementById('next60Btn').classList.remove('active'); selectedCountries.add(v); }}
+      else {{ selectedCountries.add(v); }}
       applyFilters();
     }})
   );
