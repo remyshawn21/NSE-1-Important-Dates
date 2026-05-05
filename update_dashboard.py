@@ -128,6 +128,7 @@ def build_html(payload, updated_at, logo_src):
   .header-title h1 {{ font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: white; white-space: nowrap; }}
   .header-title p {{ font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 300; white-space: nowrap; }}
   .header-right {{ display: flex; align-items: center; gap: 12px; flex-shrink: 0; }}
+  .header-btns {{ display: flex; align-items: center; gap: 12px; }}
   .updated {{ font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; }}
   .updated strong {{ color: rgba(255,255,255,0.85); }}
 
@@ -300,14 +301,21 @@ def build_html(payload, updated_at, logo_src):
     .header-title h1 {{ font-size: 14px; }}
     .header-title p {{ display: none; }}
 
-    /* All three buttons on one row, no wrapping */
+    /* All three buttons on one row, updated text above */
     .header-right {{
       width: 100%;
-      gap: 6px;
+      gap: 4px;
       justify-content: space-between;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }}
+    .header-btns {{
+      display: flex;
+      width: 100%;
+      gap: 6px;
       flex-wrap: nowrap;
     }}
-    .updated {{ display: none; }}
+    .updated {{ display: block; font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; width: 100%; text-align: center; margin-bottom: 2px; }}
 
     /* Month & Country dropdowns share equal space */
     .dropdown-btn {{
@@ -414,23 +422,25 @@ def build_html(payload, updated_at, logo_src):
   </div>
   <div class="header-right">
     <div class="updated">Last updated: <strong>{updated_at}</strong></div>
-    <div class="dropdown-wrap">
-      <button class="dropdown-btn" id="monthBtn">
-        <span id="monthLabel">All Months</span>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="header-btns">
+      <div class="dropdown-wrap">
+        <button class="dropdown-btn" id="monthBtn">
+          <span id="monthLabel">All Months</span>
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="dropdown-menu" id="monthMenu"></div>
+      </div>
+      <div class="dropdown-wrap">
+        <button class="dropdown-btn" id="countryBtn">
+          <span id="countryLabel">All Countries</span>
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="dropdown-menu" id="countryMenu"></div>
+      </div>
+      <button class="dropdown-btn next60Btn" id="next60Btn" onclick="toggleNext60()">
+        Next 60 Days
       </button>
-      <div class="dropdown-menu" id="monthMenu"></div>
     </div>
-    <div class="dropdown-wrap">
-      <button class="dropdown-btn" id="countryBtn">
-        <span id="countryLabel">All Countries</span>
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="dropdown-menu" id="countryMenu"></div>
-    </div>
-    <button class="dropdown-btn next60Btn" id="next60Btn" onclick="toggleNext60()">
-      📅 Next 60 Days
-    </button>
   </div>
 </header>
 
