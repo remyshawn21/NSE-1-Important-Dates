@@ -314,9 +314,9 @@ def build_html(payload, updated_at, logo_src):
       white-space: normal;
       line-height: 1.3;
     }}
-    .header-title p {{ display: none; }}
+    .header-title p {{ display: block; font-size: 9px; margin-top: 1px; }}
 
-    /* Row 2: last updated — full width, left-aligned under title */
+    /* Row 2: last updated — full width, right-aligned under title */
     .header-right {{
       width: 100%;
       flex-direction: column;
@@ -327,8 +327,7 @@ def build_html(payload, updated_at, logo_src):
       display: block;
       font-size: 10px;
       color: rgba(255,255,255,0.5);
-      text-align: left;
-      padding-left: 2px;
+      text-align: right;
     }}
     .updated strong {{ color: rgba(255,255,255,0.8); }}
 
