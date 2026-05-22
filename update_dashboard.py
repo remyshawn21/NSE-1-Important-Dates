@@ -505,7 +505,7 @@ const RAW = {raw_json};
 const FLAGS = {{
   DRC:'🇨🇩', Egypt:'🇪🇬', Kenya:'🇰🇪', Madagascar:'🇲🇬', Morocco:'🇲🇦',
   Mozambique:'🇲🇿', Regional:'🌍', 'South Africa':'🇿🇦', Tanzania:'🇹🇿',
-  Tunisia:'🇹🇳', Uganda:'🇺🇬', Zambia:'🇿🇲'
+  Tunisia:'🇹🇳', Uganda:'🇺🇬', Zambia:'🇿🇲', Mauritius:'MU'
 }};
 const ALL_COUNTRIES = [...new Set(RAW.months.flatMap(m=>Object.keys(RAW.data[m])))].sort();
 
