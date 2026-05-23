@@ -655,7 +655,7 @@ function exportPRToExcel() {{
   }}));
   if (rows.length === 1) {{ alert('No PR events to export.'); return; }}
   const csv = rows.map(r => r.map(c => `"${{String(c).replace(/"/g,'""')}}"`).join(',')).join('\\r\\n');
-  const blob = new Blob([csv], {{type:'text/csv'}});
+  const blob = new Blob(['\\uFEFF' + csv], {{type:'text/csv;charset=utf-8;'}});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href = url; a.download = 'TVS_NSE1_Requires_PR.csv';
