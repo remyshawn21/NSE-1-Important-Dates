@@ -14,6 +14,7 @@
     --executed: #1a7a4a; --executed-bg: #e8f5ee;
     --postponed: #CC1313; --postponed-bg: #fce8e8;
     --yet: #92650a; --yet-bg: #fffbe6;
+    --update-req: #7c2d12; --update-req-bg: #fff0e6;
     --text: #1a1f2e; --muted: #6b7280;
   }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
@@ -146,6 +147,7 @@
   .badge-executed  { background: var(--executed-bg);  color: var(--executed); }
   .badge-postponed { background: var(--postponed-bg); color: var(--postponed); }
   .badge-yet       { background: var(--yet-bg);       color: var(--yet); }
+  .badge-update-req { background: var(--update-req-bg); color: var(--update-req); border: 1px solid #f97316; }
   .badge-unknown   { background: var(--surface2);      color: var(--muted); }
 
   .desc-indicator { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
@@ -289,7 +291,7 @@
     </div>
   </div>
   <div class="header-right">
-    <div class="updated">Last updated: <strong>05 Jun 2026, 12:09</strong></div>
+    <div class="updated">Last updated: <strong>08 Jun 2026, 14:21</strong></div>
     <div class="header-btns">
       <!-- Month filter -->
       <div class="dropdown-wrap">
@@ -404,19 +406,19 @@ function parseDate(str) { const d = new Date(str); return isNaN(d) ? null : d; }
 function countEventsInMonth(m) { return Object.values(RAW.data[m]).reduce((s,e)=>s+e.length,0); }
 function countEventsForCountry(c) { return RAW.months.reduce((s,m)=>s+(RAW.data[m][c]?.length||0),0); }
 
-function badgeClass(s) {
+function badgeClass(s, datePassed) {
   if(!s) return 'badge-unknown';
   const l=s.toLowerCase();
   if(l.includes('executed'))  return 'badge-executed';
   if(l.includes('postponed')) return 'badge-postponed';
-  if(l.includes('yet'))       return 'badge-yet';
+  if(l.includes('yet'))       return datePassed ? 'badge-update-req' : 'badge-yet';
   return 'badge-unknown';
 }
-function badgeLabel(s) {
+function badgeLabel(s, datePassed) {
   if(!s) return '—';
   if(s.toLowerCase().includes('executed'))  return 'Executed';
   if(s.toLowerCase().includes('postponed')) return 'Postponed';
-  if(s.toLowerCase().includes('yet'))       return 'Upcoming';
+  if(s.toLowerCase().includes('yet'))       return datePassed ? 'Update Required' : 'Upcoming';
   return s;
 }
 
@@ -426,8 +428,8 @@ function openModal(country, event) {
   document.getElementById('modalEvent').textContent   = event.Event;
   document.getElementById('modalDate').textContent    = event.DateStr;
   const badge = document.getElementById('modalBadge');
-  badge.textContent = badgeLabel(event.Status);
-  badge.className   = 'status-badge ' + badgeClass(event.Status);
+  badge.textContent = badgeLabel(event.Status, event.DatePassed);
+  badge.className   = 'status-badge ' + badgeClass(event.Status, event.DatePassed);
   document.getElementById('modalDesc').textContent = event.Description || 'No report added yet.';
   document.getElementById('modalCat').textContent  = event.CategoryOfEvent || '—';
   document.getElementById('modalOverlay').classList.add('open');
@@ -523,20 +525,22 @@ function getFilteredEntries() {
 // ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats() {
   const filtered = getFilteredEntries();
-  const c = {executed:0,postponed:0,yet:0,unknown:0};
+  const c = {executed:0,postponed:0,yet:0,updateReq:0,unknown:0};
   filtered.forEach(item => item.events.forEach(e=>{
     const s=(e.Status||'').toLowerCase();
     if(s.includes('executed'))c.executed++;
     else if(s.includes('postponed'))c.postponed++;
+    else if(s.includes('yet') && e.DatePassed)c.updateReq++;
     else if(s.includes('yet'))c.yet++;
     else c.unknown++;
   }));
-  const total=c.executed+c.postponed+c.yet+c.unknown;
+  const total=c.executed+c.postponed+c.yet+c.updateReq+c.unknown;
   document.getElementById('statsBar').innerHTML=`
     <div class="stat-pill total"><div class="dot"></div>${total} Total Events</div>
     <div class="stat-pill executed"><div class="dot"></div>${c.executed} Executed</div>
     <div class="stat-pill postponed"><div class="dot"></div>${c.postponed} Postponed</div>
-    <div class="stat-pill yet"><div class="dot"></div>${c.yet} Upcoming</div>`;
+    <div class="stat-pill yet"><div class="dot"></div>${c.yet} Upcoming</div>`
+    + (c.updateReq ? `<div class="stat-pill" style="background:#fff0e6;color:#7c2d12;border:1px solid #f97316"><div class="dot" style="background:#7c2d12"></div>${c.updateReq} Update Required</div>` : '');
 }
 
 // ── Export to CSV (opens in Excel) ────────────────────────────────────────────
@@ -590,7 +594,7 @@ function renderCardsView(filtered) {
                   <div class="event-date">${e.DateStr||'—'}</div>
                   <div class="event-info"><div class="event-name">${e.Event}</div>${catLabel}</div>
                   <div class="event-right">
-                    <div class="status-badge ${badgeClass(e.Status)}">${badgeLabel(e.Status)}</div>
+                    <div class="status-badge ${badgeClass(e.Status, e.DatePassed)}">${badgeLabel(e.Status, e.DatePassed)}</div>
                     ${indicator}
                   </div>
                 </div>`;
